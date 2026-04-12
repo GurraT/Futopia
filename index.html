@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Chem UI Minimal</title>
+<title>Hex Ring Chemical UI</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
@@ -17,7 +17,8 @@ margin: 0;
 padding: 0;
 height: 100%;
 font-family: 'Orbitron', sans-serif;
-background: linear-gradient(135deg, #eef5ff, #ffffff);
+background: radial-gradient(circle at center, #eef5ff, #ffffff);
+overflow: hidden;
 }
 
 /* PAGE */
@@ -46,7 +47,7 @@ margin: 10px 0 20px;
 flex: 1;
 display: flex;
 gap: 30px;
-align-items: flex-start;
+position: relative;
 }
 
 /* MAIN */
@@ -70,17 +71,35 @@ position: relative;
 overflow: hidden;
 }
 
-/* ===================== */
-/* SIMPLE HEX ICON STACK */
-/* ===================== */
+/* ========================= */
+/* HEXAGON RING SYSTEM */
+/* ========================= */
 
-.hex {
+.hex-ring {
 position: absolute;
 right: 40px;
-width: 46px;
-height: 50px;
+top: 50%;
+transform: translateY(-50%);
+width: 280px;
+height: 280px;
+}
 
-background: rgba(255,255,255,0.7);
+/* subtle ring guide */
+.hex-ring::before {
+content: "";
+position: absolute;
+inset: 0;
+border-radius: 50%;
+border: 1px solid rgba(0,120,200,0.15);
+}
+
+/* HEX ICON */
+.hex {
+position: absolute;
+width: 52px;
+height: 56px;
+
+background: rgba(255,255,255,0.75);
 border: 1px solid rgba(0,120,200,0.25);
 
 clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
@@ -94,41 +113,45 @@ transition: 0.25s;
 }
 
 .hex img {
-width: 22px;
-height: 22px;
+width: 24px;
+height: 24px;
 }
 
 .hex:hover {
 transform: scale(1.25);
-box-shadow: 0 0 12px rgba(0,120,200,0.25);
+box-shadow: 0 0 14px rgba(0,120,200,0.3);
 }
 
-/* VERTICAL STACK POSITIONS (NO RING, NO HUD) */
-.i1 { top: 120px; }
-.i2 { top: 190px; }
-.i3 { top: 260px; }
-.i4 { top: 330px; }
-.i5 { top: 400px; }
-.i6 { top: 470px; }
+/* TRUE HEXAGON RING POSITIONING */
+.n1 { top: 0%; left: 50%; transform: translate(-50%, 0); }
+.n2 { top: 25%; left: 85%; transform: translate(-50%, -50%); }
+.n3 { top: 75%; left: 85%; transform: translate(-50%, -50%); }
+.n4 { top: 100%; left: 50%; transform: translate(-50%, -100%); }
+.n5 { top: 75%; left: 15%; transform: translate(-50%, -50%); }
+.n6 { top: 25%; left: 15%; transform: translate(-50%, -50%); }
 
-/* FOOTER */
+/* FOOTER (BIGGER CONTROLS) */
 .footer {
-height: 80px;
+height: 110px;
 display: flex;
 justify-content: center;
 align-items: center;
-gap: 14px;
+gap: 22px;
 }
 
 .arrow, .home {
-font-size: 24px;
+font-size: 34px;
 cursor: pointer;
 transition: 0.2s;
 }
 
 .arrow:hover {
 color: #00bcd4;
-transform: scale(1.2);
+transform: scale(1.25);
+}
+
+.home {
+font-size: 38px;
 }
 
 </style>
@@ -138,7 +161,7 @@ transform: scale(1.2);
 
 <div class="container">
 
-<h1 class="title">CHEMICAL ANALYSIS</h1>
+<h1 class="title">CHEMICAL ANALYSIS SYSTEM</h1>
 <div class="divider"></div>
 
 <div class="layout">
@@ -146,19 +169,22 @@ transform: scale(1.2);
 <!-- MAIN -->
 <div style="flex:1;">
   <div class="main-box glass">
-    <h3>Control Panel</h3>
-    <p>Select analysis method.</p>
+    <h3>Analysis Core</h3>
+    <p>Select a chemical method from the hex ring interface.</p>
   </div>
 </div>
 
-<!-- PURE ICONS (NO HUD, NO RING, NO WRAPPERS) -->
+<!-- HEX RING -->
+<div class="hex-ring glass">
 
-<a class="hex i1" href="#"><img src="https://img.icons8.com/ios-filled/50/spectrometer.png"></a>
-<a class="hex i2" href="#"><img src="https://img.icons8.com/ios-filled/50/test-tube.png"></a>
-<a class="hex i3" href="#"><img src="https://img.icons8.com/ios-filled/50/molecule.png"></a>
-<a class="hex i4" href="#"><img src="https://img.icons8.com/ios-filled/50/infrared-spectroscopy.png"></a>
-<a class="hex i5" href="#"><img src="https://img.icons8.com/ios-filled/50/visible-spectrum.png"></a>
-<a class="hex i6" href="#"><img src="https://img.icons8.com/ios-filled/50/x-ray.png"></a>
+  <a class="hex n1" href="#"><img src="https://img.icons8.com/ios-filled/50/spectrometer.png"></a>
+  <a class="hex n2" href="#"><img src="https://img.icons8.com/ios-filled/50/test-tube.png"></a>
+  <a class="hex n3" href="#"><img src="https://img.icons8.com/ios-filled/50/molecule.png"></a>
+  <a class="hex n4" href="#"><img src="https://img.icons8.com/ios-filled/50/infrared-spectroscopy.png"></a>
+  <a class="hex n5" href="#"><img src="https://img.icons8.com/ios-filled/50/visible-spectrum.png"></a>
+  <a class="hex n6" href="#"><img src="https://img.icons8.com/ios-filled/50/x-ray.png"></a>
+
+</div>
 
 </div>
 
