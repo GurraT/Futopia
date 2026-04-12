@@ -76,7 +76,6 @@ html, body {
   justify-content: center;
 
   cursor: pointer;
-  transition: none;
   transform: translate(-50%, -50%);
 }
 
@@ -87,8 +86,7 @@ html, body {
 }
 
 .hex.active {
-  transform: translate(-50%, -50%);
-  box-shadow: none;
+  box-shadow: 0 0 15px #9be7ff;
 }
 
 /* Positions */
@@ -99,9 +97,6 @@ html, body {
 .n5 { top: 75%; left: 10%; }
 .n6 { top: 25%; left: 10%; }
 
-.hex:focus { outline: none; }
-
-/* Footer */
 .footer {
   height: 110px;
   display: flex;
@@ -134,7 +129,7 @@ html, body {
 <div class="layout">
 
   <div style="flex:1;">
-    <div class="main-box glass">
+    <div class="main-box glass" id="mainBox">
       <h3>Analysis Core</h3>
       <p>Select a chemical method from the hex ring interface.</p>
     </div>
@@ -152,67 +147,80 @@ html, body {
 </div>
 
 <div class="footer">
-  <div class="control"> <span class="arrow">Period Table</span></div>
-  <div class="control"> <span class="arrow">⬅</span></div>
-  <div class="control"< >span class="home">⌂</span></div>
-  <div class="control"> <span class="arrow">➡</span></div>
-  <div class="control"> <span class="arrow">Analytics</span></div>
+  <div class="control"><span class="arrow" id="period">Periodic Table</span></div>
+  <div class="control"><span class="arrow" id="back">⬅</span></div>
+  <div class="control"><span class="home" id="home">⌂</span></div>
+  <div class="control"><span class="arrow" id="forward">➡</span></div>
+  <div class="control"><span class="arrow" id="analytics">Analytics</span></div>
 </div>
 
 </div>
 
 <script>
 const hexes = document.querySelectorAll(".hex");
-const mainBox = document.querySelector(".main-box");
+const mainBox = document.getElementById("mainBox");
+
+let historyStack = [];
+let currentIndex = -1;
+let currentHexIndex = 0;
 
 const pages = {
 
   gc: `
     <h2>Gas Chromatography (GC)</h2>
-    <p>Gas Chromatography separates compounds that can be vaporized.</p>
+    <p>Separates compounds that can be vaporized.</p>
     <ul>
       <li>Analyzes volatile substances</li>
-      <li>Used in environmental and forensic testing</li>
-      <li>High sensitivity and accuracy</li>
+      <li>Environmental & forensic use</li>
+      <li>High sensitivity</li>
     </ul>
-    <p><a href="https://microbenotes.com/gas-chromatography-gc-principle-instrumentation-applications/" target="_blank">Learn more</a></p>
   `,
 
   hplc: `
     <h2>HPLC Analysis</h2>
-    <p>High Performance Liquid Chromatography separates compounds in liquid samples under pressure.</p>
+    <p>Separates compounds in liquid samples under pressure.</p>
     <ul>
-      <li>Widely used in pharmaceuticals</li>
-      <li>High precision separation</li>
-      <li>Works with non-volatile compounds</li>
+      <li>Pharmaceutical standard</li>
+      <li>High precision</li>
+      <li>Non-volatile compounds</li>
     </ul>
-    <p><a href="https://microbenotes.com/high-performance-liquid-chromatography-hplc-principle-instrumentation-applications/" target="_blank">Learn more</a></p>
   `,
 
   ms: `
     <h2>Mass Spectrometry</h2>
-    <p>Mass Spectrometry identifies molecules by measuring mass-to-charge ratios.</p>
+    <p>Identifies molecules by mass-to-charge ratio.</p>
     <ul>
-      <li>Determines molecular structure</li>
-      <li>Highly sensitive detection</li>
-      <li>Used in chemistry and biology</li>
+      <li>Structure analysis</li>
+      <li>Highly sensitive</li>
+      <li>Chemistry & biology</li>
     </ul>
-    <p><a href="https://microbenotes.com/mass-spectrometry-principle-instrumentation-applications/" target="_blank">Learn more</a></p>
   `,
 
   uv: `
     <h2>UV Spectroscopy</h2>
-    <p>Measures how substances absorb ultraviolet light.</p>
+    <p>Measures UV light absorption.</p>
     <ul>
-      <li>Detects concentration of compounds</li>
-      <li>Fast and simple analysis</li>
-      <li>Used in chemistry and biology</li>
+      <li>Concentration detection</li>
+      <li>Fast analysis</li>
+      <li>Widely used</li>
     </ul>
-    <p><a href="https://microbenotes.com/uv-spectroscopy-principle-instrumentation-applications/" target="_blank">Learn more</a></p>
   `
 };
 
-hexes.forEach(hex => {
+function loadPage(pageKey) {
+  if (!pages[pageKey]) return;
+
+  mainBox.innerHTML = pages[pageKey];
+
+  if (historyStack[currentIndex] !== pageKey) {
+    historyStack = historyStack.slice(0, currentIndex + 1);
+    historyStack.push(pageKey);
+    currentIndex++;
+  }
+}
+
+// HEX CLICK
+hexes.forEach((hex, index) => {
   hex.addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -220,9 +228,56 @@ hexes.forEach(hex => {
     hex.classList.add("active");
 
     const page = hex.getAttribute("data-page");
-    mainBox.innerHTML = pages[page] || "<p>No data found</p>";
+    loadPage(page);
+
+    currentHexIndex = index;
   });
 });
+
+// BACK
+document.getElementById("back").onclick = () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    mainBox.innerHTML = pages[historyStack[currentIndex]];
+  }
+};
+
+// FORWARD
+document.getElementById("forward").onclick = () => {
+  currentHexIndex = (currentHexIndex + 1) % hexes.length;
+  hexes[currentHexIndex].click();
+};
+
+// HOME
+document.getElementById("home").onclick = () => {
+  mainBox.innerHTML = `
+    <h3>Analysis Core</h3>
+    <p>Select a chemical method from the hex ring interface.</p>
+  `;
+  hexes.forEach(h => h.classList.remove("active"));
+  historyStack = [];
+  currentIndex = -1;
+};
+
+// ANALYTICS
+document.getElementById("analytics").onclick = () => {
+  mainBox.innerHTML = `
+    <h2>Analytics Dashboard</h2>
+    <ul>
+      <li>Sample throughput</li>
+      <li>Instrument efficiency</li>
+      <li>Data trends</li>
+    </ul>
+  `;
+};
+
+// PERIODIC TABLE
+document.getElementById("period").onclick = () => {
+  mainBox.innerHTML = `
+    <h2>Periodic Table</h2>
+    <p><a href="https://ptable.com" target="_blank">Open Interactive Table</a></p>
+  `;
+};
 </script>
 
 </body>
