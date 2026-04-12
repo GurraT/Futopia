@@ -118,4 +118,84 @@
       margin-top: 30px;
       display: flex;
       justify-content: center;
-      align-items: c
+      align-items: center;
+      gap: 20px;
+    }
+
+    .btn {
+      width: 120px;
+      height: 40px;
+      border-radius: 12px;
+    }
+
+    .arrow {
+      font-size: 30px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .arrow:hover {
+      color: cyan;
+      transform: scale(1.2);
+    }
+
+    .home {
+      font-size: 30px;
+    }
+
+    /* hover glow */
+    .glass:hover {
+      border-color: cyan;
+      box-shadow: 0 0 30px rgba(0,255,255,0.3);
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>HOMEPAGE</h1>
+    <div class="divider"></div>
+
+    <div class="icons">
+      <div class="hex center">⚙</div>
+      <div class="hex h1">📊</div>
+      <div class="hex h2">📁</div>
+      <div class="hex h3">📋</div>
+      <div class="hex h4">🔍</div>
+      <div class="hex h5">🧠</div>
+      <div class="hex h6">⚡</div>
+    </div>
+
+    <div class="layout">
+      <div>
+        <div class="main-box glass">
+          <h3>Main DIV</h3>
+          <p>
+            Transparent glass UI panel.<br>
+            Looks like a futuristic window.
+          </p>
+        </div>
+
+        <div class="controls">
+          <div class="btn glass"></div>
+          <div class="arrow">⬅</div>
+          <div class="home">⌂</div>
+          <div class="arrow">➡</div>
+          <div class="btn glass"></div>
+        </div>
+      </div>
+
+      <div class="side-box glass">
+        <h3>Side div</h3>
+        <p>
+          Glass side panel<br>
+          Floating UI feel
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
