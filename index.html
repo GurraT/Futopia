@@ -16,12 +16,12 @@ background: linear-gradient(135deg, #dfe9f3, #ffffff);
 perspective: 1200px;
 }
 
+/* reduced top spacing */
 .container {
-padding: 30px 40px;
+padding: 15px 40px 0 40px;
 position: relative;
 }
 
-/* TOP TITLE ONLY */
 .title {
 font-size: 26px;
 letter-spacing: 3px;
@@ -31,14 +31,7 @@ margin: 0;
 .divider {
 height: 2px;
 background: linear-gradient(90deg, transparent, #9be7ff, transparent);
-margin: 18px 0 30px;
-}
-
-/* FLOATING ICONS (NOT INSIDE HEADER) */
-.icons-float {
-position: absolute;
-top: 20px;
-right: 40px;
+margin: 10px 0 20px;
 }
 
 /* ULTRA GLASS */
@@ -95,7 +88,6 @@ transition: 0.25s;
 .hex img {
 width: 18px;
 height: 18px;
-pointer-events: none;
 }
 
 .hex:hover {
@@ -112,24 +104,33 @@ transform: scale(1.25);
 
 /* LAYOUT */
 .layout {
-display: grid;
-grid-template-columns: 2fr 1fr;
+display: flex;
 gap: 30px;
+align-items: flex-start;
 }
 
+/* MAIN BOX */
 .main-box {
 padding: 40px;
 min-height: 250px;
+flex: 1;
 }
 
-/* MINIMIZED FOOTER (CONTROLS) */
+/* ICONS RIGHT SIDE (NO FLOATING CONTAINER) */
+.side-icons {
+width: 140px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+/* controls */
 .controls {
-margin-top: 18px;
+margin-top: 10px;
 display: flex;
 justify-content: center;
 align-items: center;
 gap: 14px;
-transform: scale(0.95);
 }
 
 .btn {
@@ -150,30 +151,18 @@ transform: scale(1.15);
 
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
-<!-- TOP TITLE ONLY -->
 <h1 class="title">HOMEPAGE</h1>
-
 <div class="divider"></div>
 
-    <!-- FLOATING ICONS (NOT INSIDE HEADER) -->
-    <div class="icons-float glass" style="padding:10px;">
-      <div class="icons">
-        <a class="hex center" href="#"><img src="https://img.icons8.com/ios-filled/50/spectrometer.png"></a>
-        <a class="hex h1" href="#"><img src="https://img.icons8.com/ios-filled/50/test-tube.png"></a>
-        <a class="hex h2" href="#"><img src="https://img.icons8.com/ios-filled/50/molecule.png"></a>
-        <a class="hex h3" href="#"><img src="https://img.icons8.com/ios-filled/50/chemical-plant.png"></a>
-        <a class="hex h4" href="#"><img src="https://img.icons8.com/ios-filled/50/mass-spectrometry.png"></a>
-        <a class="hex h5" href="#"><img src="https://img.icons8.com/ios-filled/50/laser-beam.png"></a>
-        <a class="hex h6" href="#"><img src="https://img.icons8.com/ios-filled/50/periodic-table.png"></a>
-      </div>
-    </div>
-
 <div class="layout">
-<div>
+
+<!-- MAIN -->
+<div style="flex:1;">
 <div class="main-box glass">
 <h3>Main DIV</h3>
 <p>Ultra realistic glass panel with lighting & depth.</p>
@@ -187,6 +176,20 @@ transform: scale(1.15);
 <div class="btn glass"></div>
 </div>
 </div>
+
+<!-- ICONS RIGHT SIDE (NO EXTRA WRAPPER DIV) -->
+<div class="side-icons">
+<div class="icons glass" style="padding:10px;">
+<a class="hex center" href="#"><img src="https://img.icons8.com/ios-filled/50/spectrometer.png"></a>
+<a class="hex h1" href="#"><img src="https://img.icons8.com/ios-filled/50/test-tube.png"></a>
+<a class="hex h2" href="#"><img src="https://img.icons8.com/ios-filled/50/molecule.png"></a>
+<a class="hex h3" href="#"><img src="https://img.icons8.com/ios-filled/50/chemical-plant.png"></a>
+<a class="hex h4" href="#"><img src="https://img.icons8.com/ios-filled/50/mass-spectrometry.png"></a>
+<a class="hex h5" href="#"><img src="https://img.icons8.com/ios-filled/50/laser-beam.png"></a>
+<a class="hex h6" href="#"><img src="https://img.icons8.com/ios-filled/50/periodic-table.png"></a>
+</div>
+</div>
+
 </div>
 
 </div>
