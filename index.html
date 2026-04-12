@@ -3,19 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Chem Analysis HUD</title>
+<title>Chem Hex Ring UI</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; }
+* {
+box-sizing: border-box;
+}
 
 html, body {
 margin: 0;
 padding: 0;
 height: 100%;
 font-family: 'Orbitron', sans-serif;
-background: radial-gradient(circle at center, #eaf3ff, #ffffff);
+background: radial-gradient(circle at center, #eef5ff, #ffffff);
 overflow: hidden;
 }
 
@@ -48,7 +50,7 @@ gap: 30px;
 position: relative;
 }
 
-/* MAIN PANEL */
+/* MAIN */
 .main-box {
 height: 70vh;
 flex: 1;
@@ -69,52 +71,39 @@ position: relative;
 overflow: hidden;
 }
 
-/* HUD CLUSTER */
-.hud {
+/* ========================= */
+/* HEXAGON RING (NO HUD) */
+/* ========================= */
+
+.hex-ring {
 position: absolute;
 right: 40px;
 top: 50%;
 transform: translateY(-50%);
-width: 280px;
-height: 280px;
+width: 260px;
+height: 260px;
+display: flex;
+justify-content: center;
+align-items: center;
 }
 
-/* ENERGY RING */
-.hud::before {
+/* OUTER GUIDE CIRCLE (subtle structure) */
+.hex-ring::before {
 content: "";
 position: absolute;
-inset: 0;
+width: 100%;
+height: 100%;
 border-radius: 50%;
-border: 1px solid rgba(0,150,255,0.25);
-box-shadow: 0 0 20px rgba(0,150,255,0.25);
-animation: pulse 4s infinite ease-in-out;
+border: 1px solid rgba(0,0,0,0.08);
 }
 
-@keyframes pulse {
-0%,100% { transform: scale(1); opacity: 1; }
-50% { transform: scale(1.06); opacity: 0.6; }
-}
-
-/* CORE */
-.core {
-position: absolute;
-top: 50%;
-left: 50%;
-width: 65px;
-height: 65px;
-transform: translate(-50%, -50%);
-border-radius: 50%;
-background: radial-gradient(circle, rgba(0,150,255,0.5), transparent);
-box-shadow: 0 0 25px rgba(0,150,255,0.4);
-}
-
-/* HEX NODE */
+/* HEX */
 .hex {
 position: absolute;
-width: 42px;
-height: 46px;
-background: rgba(255,255,255,0.65);
-border: 1px solid rgba(0,150,255,0.25);
+width: 46px;
+height: 50px;
+background: rgba(255,255,255,0.7);
+border: 1px solid rgba(0,120,200,0.25);
 clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
 display: flex;
 align-items: center;
@@ -129,17 +118,17 @@ height: 22px;
 }
 
 .hex:hover {
-transform: scale(1.3);
-box-shadow: 0 0 14px rgba(0,150,255,0.4);
+transform: scale(1.25);
+box-shadow: 0 0 12px rgba(0,120,200,0.3);
 }
 
-/* ORBIT POSITIONS */
-.n1 { top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(0deg) translate(110px); }
-.n2 { top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(60deg) translate(110px); }
-.n3 { top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(120deg) translate(110px); }
-.n4 { top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(180deg) translate(110px); }
-.n5 { top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(240deg) translate(110px); }
-.n6 { top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(300deg) translate(110px); }
+/* TRUE HEXAGON RING POSITIONS */
+.n1 { top: 0%; left: 50%; transform: translate(-50%, 0); }
+.n2 { top: 25%; left: 85%; transform: translate(-50%, -50%); }
+.n3 { top: 75%; left: 85%; transform: translate(-50%, -50%); }
+.n4 { top: 100%; left: 50%; transform: translate(-50%, -100%); }
+.n5 { top: 75%; left: 15%; transform: translate(-50%, -50%); }
+.n6 { top: 25%; left: 15%; transform: translate(-50%, -50%); }
 
 /* FOOTER */
 .footer {
@@ -168,7 +157,7 @@ transform: scale(1.2);
 
 <div class="container">
 
-<h1 class="title">CHEMICAL ANALYSIS SYSTEM</h1>
+<h1 class="title">CHEMICAL ANALYSIS</h1>
 <div class="divider"></div>
 
 <div class="layout">
@@ -176,45 +165,20 @@ transform: scale(1.2);
 <!-- MAIN -->
 <div style="flex:1;">
   <div class="main-box glass">
-    <h3>Analytical Control Core</h3>
-    <p>All chemical analysis systems online.</p>
+    <h3>Analysis Control Panel</h3>
+    <p>Select a method from the hexagon ring.</p>
   </div>
 </div>
 
-<!-- HUD CLUSTER -->
-<div class="hud glass">
+<!-- HEXAGON RING -->
+<div class="hex-ring glass">
 
-  <div class="core"></div>
-
-  <!-- Mass Spectrometry -->
-  <a class="hex n1" href="#">
-    <img src="https://img.icons8.com/ios-filled/50/spectrometer.png">
-  </a>
-
-  <!-- Chromatography -->
-  <a class="hex n2" href="#">
-    <img src="https://img.icons8.com/ios-filled/50/test-tube.png">
-  </a>
-
-  <!-- NMR -->
-  <a class="hex n3" href="#">
-    <img src="https://img.icons8.com/ios-filled/50/molecule.png">
-  </a>
-
-  <!-- Infrared (FTIR) -->
-  <a class="hex n4" href="#">
-    <img src="https://img.icons8.com/ios-filled/50/infrared-spectroscopy.png">
-  </a>
-
-  <!-- UV-Vis -->
-  <a class="hex n5" href="#">
-    <img src="https://img.icons8.com/ios-filled/50/visible-spectrum.png">
-  </a>
-
-  <!-- X-Ray Diffraction -->
-  <a class="hex n6" href="#">
-    <img src="https://img.icons8.com/ios-filled/50/x-ray.png">
-  </a>
+  <a class="hex n1" href="#"><img src="https://img.icons8.com/ios-filled/50/spectrometer.png"></a>
+  <a class="hex n2" href="#"><img src="https://img.icons8.com/ios-filled/50/test-tube.png"></a>
+  <a class="hex n3" href="#"><img src="https://img.icons8.com/ios-filled/50/molecule.png"></a>
+  <a class="hex n4" href="#"><img src="https://img.icons8.com/ios-filled/50/infrared-spectroscopy.png"></a>
+  <a class="hex n5" href="#"><img src="https://img.icons8.com/ios-filled/50/visible-spectrum.png"></a>
+  <a class="hex n6" href="#"><img src="https://img.icons8.com/ios-filled/50/x-ray.png"></a>
 
 </div>
 
