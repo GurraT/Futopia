@@ -107,6 +107,31 @@
       object-fit: contain;
       pointer-events: none;
     }
+
+    /* FLOATING LABEL */
+    .hex::after {
+      content: attr(title);
+      position: absolute;
+      white-space: nowrap;
+      padding: 4px 8px;
+      font-size: 10px;
+      background: rgba(255,255,255,0.8);
+      color: #000;
+      border-radius: 6px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+      opacity: 0;
+      transform: translateY(10px);
+      transition: 0.25s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .hex:hover::after {
+      opacity: 1;
+      transform: translateY(-40px);
+    }
       position: absolute;
       width: 30px;
       height: 34px;
@@ -236,6 +261,30 @@
           <div class="arrow">➡</div>
           <div class="btn glass"></div>
         </div>
+      </div>
+
+      <!-- ICON SYSTEM moved here -->
+      <div class="glass" style="padding:30px; display:flex; justify-content:center; align-items:center;">
+        <div class="icons" style="transform: scale(1.5);">
+          <a class="hex center" href="#" title="Spectroscopy"><img src="https://img.icons8.com/ios-filled/50/spectrometer.png"/></a>
+
+          <a class="hex h1" href="#" title="Liquid Chromatography"><img src="https://img.icons8.com/ios-filled/50/test-tube.png"/></a>
+          <a class="hex h2" href="#" title="LC-MS"><img src="https://img.icons8.com/ios-filled/50/molecule.png"/></a>
+          <a class="hex h3" href="#" title="Gas Chromatography"><img src="https://img.icons8.com/ios-filled/50/chemical-plant.png"/></a>
+          <a class="hex h4" href="#" title="GC-MS"><img src="https://img.icons8.com/ios-filled/50/mass-spectrometry.png"/></a>
+          <a class="hex h5" href="#" title="MALDI"><img src="https://img.icons8.com/ios-filled/50/laser-beam.png"/></a>
+          <a class="hex h6" href="#" title="Elemental Analysis"><img src="https://img.icons8.com/ios-filled/50/periodic-table.png"/></a>
+
+          <a class="hex" style="top:-20%;left:50%;transform:translate(-50%,0);" title="Material Testing"><img src="https://img.icons8.com/ios-filled/50/hammer.png"/></a>
+          <a class="hex" style="top:10%;left:100%;transform:translate(-50%,-50%);" title="NDT"><img src="https://img.icons8.com/ios-filled/50/inspection.png"/></a>
+          <a class="hex" style="top:90%;left:100%;transform:translate(-50%,-50%);" title="TOC Analysis"><img src="https://img.icons8.com/ios-filled/50/water.png"/></a>
+          <a class="hex" style="top:120%;left:50%;transform:translate(-50%,-100%);" title="Surface Analysis"><img src="https://img.icons8.com/ios-filled/50/grid.png"/></a>
+          <a class="hex" style="top:90%;left:0%;transform:translate(-50%,-50%);" title="Particle Size"><img src="https://img.icons8.com/ios-filled/50/scatter-plot.png"/></a>
+          <a class="hex" style="top:10%;left:0%;transform:translate(-50%,-50%);" title="Balances"><img src="https://img.icons8.com/ios-filled/50/scale.png"/></a>
+          <a class="hex" style="top:50%;left:115%;transform:translate(-50%,-50%);" title="Optical Devices"><img src="https://img.icons8.com/ios-filled/50/binoculars.png"/></a>
+        </div>
+      </div>
+    </div>
       </div>
 
       <div class="side-box glass">
