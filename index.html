@@ -49,7 +49,7 @@ html, body {
   height: 70vh;
   flex: 1;
   padding: 25px;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .glass {
@@ -101,7 +101,7 @@ html, body {
 .n5 { top: 75%; left: 10%; }
 .n6 { top: 25%; left: 10%; }
 
-/* 🧠 CENTER ICON */
+/* 🧠 CENTER BUTTON */
 .center-icon {
   position: absolute;
   top: 50%;
@@ -227,7 +227,7 @@ th {
   <!-- HEX RING -->
   <div class="hex-ring glass">
 
-    <!-- CENTER ICON -->
+    <!-- CENTER BUTTON -->
     <div class="center-icon" id="periodicCenter">
       ⚛️
     </div>
@@ -259,19 +259,8 @@ const hexes = document.querySelectorAll(".hex");
 const mainBox = document.getElementById("mainBox");
 const homeContent = document.getElementById("homeContent");
 
-let historyStack = [];
-let currentIndex = -1;
-let currentHexIndex = 0;
-
-const pages = {
-  gc: `<h2>Gas Chromatography (GC)</h2><p>Separates volatile compounds.</p>`,
-  hplc: `<h2>HPLC</h2><p>Liquid separation under pressure.</p>`,
-  ms: `<h2>Mass Spectrometry</h2><p>Molecular identification.</p>`,
-  uv: `<h2>UV Spectroscopy</h2><p>Light absorption analysis.</p>`
-};
-
 // HEX CLICK
-hexes.forEach((hex, index) => {
+hexes.forEach((hex) => {
   hex.addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -279,9 +268,15 @@ hexes.forEach((hex, index) => {
     hex.classList.add("active");
 
     const page = hex.getAttribute("data-page");
-    mainBox.innerHTML = pages[page];
 
-    currentHexIndex = index;
+    const pages = {
+      gc: `<h2>Gas Chromatography</h2><p>Volatile compound separation.</p>`,
+      hplc: `<h2>HPLC</h2><p>Liquid separation under pressure.</p>`,
+      ms: `<h2>Mass Spectrometry</h2><p>Molecular identification.</p>`,
+      uv: `<h2>UV Spectroscopy</h2><p>Light absorption analysis.</p>`
+    };
+
+    mainBox.innerHTML = pages[page];
   });
 });
 
@@ -291,11 +286,19 @@ document.getElementById("home").onclick = () => {
   hexes.forEach(h => h.classList.remove("active"));
 };
 
-// CENTER ICON ACTION
+// CENTER ICON → PERIODIC TABLE IN IFRAME
 document.getElementById("periodicCenter").onclick = () => {
   mainBox.innerHTML = `
-    <h2>Periodic Core Activated</h2>
-    <p>Central atomic navigation system online.</p>
+    <iframe 
+      src="https://gurrat.github.io/PT/" 
+      style="
+        width: 100%;
+        height: 70vh;
+        border: none;
+        border-radius: 12px;
+        background: white;
+      ">
+    </iframe>
   `;
 };
 
@@ -304,12 +307,9 @@ document.getElementById("analytics").onclick = () => {
   mainBox.innerHTML = `<h2>Analytics Dashboard</h2>`;
 };
 
-// PERIODIC TABLE
+// PERIODIC BUTTON (FOOTER)
 document.getElementById("period").onclick = () => {
-  mainBox.innerHTML = `
-    <h2>Periodic Table</h2>
-    <p><a href="https://ptable.com" target="_blank">Open Interactive Table</a></p>
-  `;
+  mainBox.innerHTML = `<h2>Periodic Table Access</h2>`;
 };
 </script>
 
