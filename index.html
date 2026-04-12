@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Chem Hex Ring UI</title>
+<title>Chem UI Minimal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
@@ -17,11 +17,10 @@ margin: 0;
 padding: 0;
 height: 100%;
 font-family: 'Orbitron', sans-serif;
-background: radial-gradient(circle at center, #eef5ff, #ffffff);
-overflow: hidden;
+background: linear-gradient(135deg, #eef5ff, #ffffff);
 }
 
-/* CONTAINER */
+/* PAGE */
 .container {
 height: 100vh;
 display: flex;
@@ -47,7 +46,7 @@ margin: 10px 0 20px;
 flex: 1;
 display: flex;
 gap: 30px;
-position: relative;
+align-items: flex-start;
 }
 
 /* MAIN */
@@ -71,43 +70,25 @@ position: relative;
 overflow: hidden;
 }
 
-/* ========================= */
-/* HEXAGON RING (NO HUD) */
-/* ========================= */
+/* ===================== */
+/* SIMPLE HEX ICON STACK */
+/* ===================== */
 
-.hex-ring {
-position: absolute;
-right: 40px;
-top: 50%;
-transform: translateY(-50%);
-width: 260px;
-height: 260px;
-display: flex;
-justify-content: center;
-align-items: center;
-}
-
-/* OUTER GUIDE CIRCLE (subtle structure) */
-.hex-ring::before {
-content: "";
-position: absolute;
-width: 100%;
-height: 100%;
-border-radius: 50%;
-border: 1px solid rgba(0,0,0,0.08);
-}
-
-/* HEX */
 .hex {
 position: absolute;
+right: 40px;
 width: 46px;
 height: 50px;
+
 background: rgba(255,255,255,0.7);
 border: 1px solid rgba(0,120,200,0.25);
+
 clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+
 display: flex;
 align-items: center;
 justify-content: center;
+
 backdrop-filter: blur(10px);
 transition: 0.25s;
 }
@@ -119,16 +100,16 @@ height: 22px;
 
 .hex:hover {
 transform: scale(1.25);
-box-shadow: 0 0 12px rgba(0,120,200,0.3);
+box-shadow: 0 0 12px rgba(0,120,200,0.25);
 }
 
-/* TRUE HEXAGON RING POSITIONS */
-.n1 { top: 0%; left: 50%; transform: translate(-50%, 0); }
-.n2 { top: 25%; left: 85%; transform: translate(-50%, -50%); }
-.n3 { top: 75%; left: 85%; transform: translate(-50%, -50%); }
-.n4 { top: 100%; left: 50%; transform: translate(-50%, -100%); }
-.n5 { top: 75%; left: 15%; transform: translate(-50%, -50%); }
-.n6 { top: 25%; left: 15%; transform: translate(-50%, -50%); }
+/* VERTICAL STACK POSITIONS (NO RING, NO HUD) */
+.i1 { top: 120px; }
+.i2 { top: 190px; }
+.i3 { top: 260px; }
+.i4 { top: 330px; }
+.i5 { top: 400px; }
+.i6 { top: 470px; }
 
 /* FOOTER */
 .footer {
@@ -165,22 +146,19 @@ transform: scale(1.2);
 <!-- MAIN -->
 <div style="flex:1;">
   <div class="main-box glass">
-    <h3>Analysis Control Panel</h3>
-    <p>Select a method from the hexagon ring.</p>
+    <h3>Control Panel</h3>
+    <p>Select analysis method.</p>
   </div>
 </div>
 
-<!-- HEXAGON RING -->
-<div class="hex-ring glass">
+<!-- PURE ICONS (NO HUD, NO RING, NO WRAPPERS) -->
 
-  <a class="hex n1" href="#"><img src="https://img.icons8.com/ios-filled/50/spectrometer.png"></a>
-  <a class="hex n2" href="#"><img src="https://img.icons8.com/ios-filled/50/test-tube.png"></a>
-  <a class="hex n3" href="#"><img src="https://img.icons8.com/ios-filled/50/molecule.png"></a>
-  <a class="hex n4" href="#"><img src="https://img.icons8.com/ios-filled/50/infrared-spectroscopy.png"></a>
-  <a class="hex n5" href="#"><img src="https://img.icons8.com/ios-filled/50/visible-spectrum.png"></a>
-  <a class="hex n6" href="#"><img src="https://img.icons8.com/ios-filled/50/x-ray.png"></a>
-
-</div>
+<a class="hex i1" href="#"><img src="https://img.icons8.com/ios-filled/50/spectrometer.png"></a>
+<a class="hex i2" href="#"><img src="https://img.icons8.com/ios-filled/50/test-tube.png"></a>
+<a class="hex i3" href="#"><img src="https://img.icons8.com/ios-filled/50/molecule.png"></a>
+<a class="hex i4" href="#"><img src="https://img.icons8.com/ios-filled/50/infrared-spectroscopy.png"></a>
+<a class="hex i5" href="#"><img src="https://img.icons8.com/ios-filled/50/visible-spectrum.png"></a>
+<a class="hex i6" href="#"><img src="https://img.icons8.com/ios-filled/50/x-ray.png"></a>
 
 </div>
 
