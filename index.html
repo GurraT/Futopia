@@ -48,12 +48,8 @@ html, body {
 .main-box {
   height: 70vh;
   flex: 1;
-  padding: 25px;
-  overflow: hidden;
-}
-
-.glass {
-  border-radius: 20px;
+  padding: 20px;
+  overflow: auto;
 }
 
 /* HEX RING */
@@ -63,7 +59,6 @@ html, body {
   height: 280px;
 }
 
-/* HEX BUTTONS */
 .hex {
   position: absolute;
   width: 70px;
@@ -93,7 +88,7 @@ html, body {
   box-shadow: 0 0 15px #9be7ff;
 }
 
-/* HEX POSITIONS */
+/* POSITIONS */
 .n1 { top: 0%; left: 50%; }
 .n2 { top: 25%; left: 90%; }
 .n3 { top: 75%; left: 90%; }
@@ -101,7 +96,7 @@ html, body {
 .n5 { top: 75%; left: 10%; }
 .n6 { top: 25%; left: 10%; }
 
-/* 🧠 CENTER BUTTON */
+/* CENTER BUTTON */
 .center-icon {
   position: absolute;
   top: 50%;
@@ -153,25 +148,35 @@ html, body {
   cursor: pointer;
 }
 
-/* TABLE */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
+/* PERIODIC TABLE */
+.periodic-grid {
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  gap: 4px;
+}
+
+.element {
   background: white;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid #d9e8ff;
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 10px;
   text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-th {
-  background: #eef5ff;
-  font-weight: 600;
+.element:hover {
+  box-shadow: 0 0 10px #9be7ff;
+  transform: scale(1.05);
+}
+
+.tech-panel {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid #d9e8ff;
 }
 </style>
 </head>
@@ -189,48 +194,16 @@ th {
   <div style="flex:1;">
     <div class="main-box glass" id="mainBox">
 
-      <div id="homeContent">
-        <h3>Analysis Core</h3>
-        <p>Select a chemical method from the hex ring interface.</p>
-
-        <h3 style="margin-top:25px;">Method Comparison</h3>
-
-        <div style="overflow:auto; max-height: 45vh;">
-        <table>
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Best For</th>
-              <th>Sample</th>
-              <th>Strength</th>
-              <th>Limitation</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>GC</td><td>Volatile compounds</td><td>Gas/liquid</td><td>High sensitivity</td><td>Only volatile</td></tr>
-            <tr><td>HPLC</td><td>Non-volatile mixtures</td><td>Liquid</td><td>High precision</td><td>Expensive</td></tr>
-            <tr><td>MS</td><td>Molecular ID</td><td>All</td><td>Very sensitive</td><td>Complex</td></tr>
-            <tr><td>UV-Vis</td><td>Concentration</td><td>Solution</td><td>Fast</td><td>Needs color</td></tr>
-            <tr><td>IR</td><td>Functional groups</td><td>All</td><td>Quick ID</td><td>Limited quant</td></tr>
-            <tr><td>NMR</td><td>Structure</td><td>Pure compounds</td><td>Detailed</td><td>Very expensive</td></tr>
-            <tr><td>ICP-MS</td><td>Trace metals</td><td>Liquid</td><td>Ultra sensitive</td><td>Element only</td></tr>
-            <tr><td>Titration</td><td>Concentration</td><td>Liquid</td><td>Accurate</td><td>Manual</td></tr>
-          </tbody>
-        </table>
-        </div>
-
-      </div>
+      <h3>Analysis Core</h3>
+      <p>Select a chemical method or open periodic system.</p>
 
     </div>
   </div>
 
   <!-- HEX RING -->
-  <div class="hex-ring glass">
+  <div class="hex-ring">
 
-    <!-- CENTER BUTTON -->
-    <div class="center-icon" id="periodicCenter">
-      ⚛️
-    </div>
+    <div class="center-icon" id="periodicCenter">⚛️</div>
 
     <a class="hex n1" href="#" data-page="gc"><img src="pic/gc.jpg"></a>
     <a class="hex n2" href="#" data-page="hplc"><img src="pic/hplc.jpg"></a>
@@ -245,71 +218,104 @@ th {
 
 <!-- FOOTER -->
 <div class="footer">
-  <div class="control"><h4 id="period">Periodic Table</h4></div>
-  <div class="control"><span class="arrow" id="back">⬅</span></div>
+  <div class="control"><h4 id="period">Periodic</h4></div>
   <div class="control"><span class="home" id="home">⌂</span></div>
-  <div class="control"><span class="arrow" id="forward">➡</span></div>
-  <div class="control"><h4 id="analytics">Analytics</h4></div>
 </div>
 
 </div>
 
 <script>
-const hexes = document.querySelectorAll(".hex");
 const mainBox = document.getElementById("mainBox");
-const homeContent = document.getElementById("homeContent");
 
-// HEX CLICK
-hexes.forEach((hex) => {
+/* ---------------------------
+   BASIC HEX PAGES
+--------------------------- */
+const pages = {
+  gc: `<h2>Gas Chromatography</h2><p>Volatile compound separation.</p>`,
+  hplc: `<h2>HPLC</h2><p>Liquid phase separation.</p>`,
+  ms: `<h2>Mass Spectrometry</h2><p>Molecular identification.</p>`,
+  uv: `<h2>UV Spectroscopy</h2><p>Light absorption analysis.</p>`
+};
+
+document.querySelectorAll(".hex").forEach(hex => {
   hex.addEventListener("click", (e) => {
     e.preventDefault();
-
-    hexes.forEach(h => h.classList.remove("active"));
-    hex.classList.add("active");
-
-    const page = hex.getAttribute("data-page");
-
-    const pages = {
-      gc: `<h2>Gas Chromatography</h2><p>Volatile compound separation.</p>`,
-      hplc: `<h2>HPLC</h2><p>Liquid separation under pressure.</p>`,
-      ms: `<h2>Mass Spectrometry</h2><p>Molecular identification.</p>`,
-      uv: `<h2>UV Spectroscopy</h2><p>Light absorption analysis.</p>`
-    };
-
+    const page = hex.dataset.page;
     mainBox.innerHTML = pages[page];
   });
 });
 
-// HOME
-document.getElementById("home").onclick = () => {
-  mainBox.innerHTML = homeContent.innerHTML;
-  hexes.forEach(h => h.classList.remove("active"));
+/* ---------------------------
+   PERIODIC DATA
+--------------------------- */
+const periodicData = [
+  {symbol:"H", name:"Hydrogen", col:1, row:1, tech:["MS","IR","UV"]},
+  {symbol:"He", name:"Helium", col:18, row:1, tech:["GC","MS"]},
+  {symbol:"C", name:"Carbon", col:14, row:2, tech:["MS","NMR","IR","GC-MS"]},
+  {symbol:"N", name:"Nitrogen", col:15, row:2, tech:["GC","MS"]},
+  {symbol:"O", name:"Oxygen", col:16, row:2, tech:["IR","UV","MS"]},
+  {symbol:"Na", name:"Sodium", col:1, row:3, tech:["AAS","ICP-MS"]},
+  {symbol:"Cl", name:"Chlorine", col:17, row:3, tech:["GC","MS","Titration"]},
+  {symbol:"Fe", name:"Iron", col:8, row:4, tech:["AAS","ICP-MS","XRD"]},
+  {symbol:"Cu", name:"Copper", col:11, row:4, tech:["AAS","ICP-MS","XRF"]},
+  {symbol:"Au", name:"Gold", col:11, row:6, tech:["XRF","ICP-MS","SEM"]}
+];
+
+function renderPeriodicTable() {
+  let grid = `<div class="periodic-grid">`;
+
+  periodicData.forEach(el => {
+    grid += `
+      <div class="element"
+           style="grid-column:${el.col}; grid-row:${el.row}"
+           onclick="selectElement('${el.symbol}')">
+        <b>${el.symbol}</b>
+      </div>
+    `;
+  });
+
+  grid += `</div>
+    <div id="techPanel" class="tech-panel">
+      Click an element to see analysis techniques
+    </div>`;
+
+  mainBox.innerHTML = grid;
+}
+
+function selectElement(symbol) {
+  const el = periodicData.find(e => e.symbol === symbol);
+
+  document.getElementById("techPanel").innerHTML = `
+    <h3>${el.name} (${el.symbol})</h3>
+    <p><b>Recommended Techniques:</b></p>
+    <ul>
+      ${el.tech.map(t => `<li>${t}</li>`).join("")}
+    </ul>
+  `;
+}
+
+/* ---------------------------
+   CENTER BUTTON
+--------------------------- */
+document.getElementById("periodicCenter").onclick = () => {
+  renderPeriodicTable();
 };
 
-// CENTER ICON → PERIODIC TABLE IN IFRAME
-document.getElementById("periodicCenter").onclick = () => {
+/* ---------------------------
+   HOME
+--------------------------- */
+document.getElementById("home").onclick = () => {
   mainBox.innerHTML = `
-    <iframe 
-      src="https://gurrat.github.io/PT/" 
-      style="
-        width: 100%;
-        height: 70vh;
-        border: none;
-        border-radius: 12px;
-        background: white;
-      ">
-    </iframe>
+    <h3>Analysis Core</h3>
+    <p>Select a chemical method or open periodic system.</p>
   `;
 };
 
-// ANALYTICS
-document.getElementById("analytics").onclick = () => {
-  mainBox.innerHTML = `<h2>Analytics Dashboard</h2>`;
-};
-
-// PERIODIC BUTTON (FOOTER)
+/* ---------------------------
+   FOOTER PERIODIC BUTTON
+--------------------------- */
 document.getElementById("period").onclick = () => {
-  mainBox.innerHTML = `<h2>Periodic Table Access</h2>`;
+  renderPeriodicTable();
 };
 </script>
 
