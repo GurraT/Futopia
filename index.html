@@ -8,9 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -52,19 +50,16 @@ html, body {
   padding: 40px;
 }
 
-/* NO EFFECTS */
 .glass {
   border-radius: 20px;
 }
 
-/* HEX RING */
 .hex-ring {
   position: relative;
   width: 280px;
   height: 280px;
 }
 
-/* HEX BUTTON */
 .hex {
   position: absolute;
   width: 70px;
@@ -72,12 +67,8 @@ html, body {
   background: #ffffff;
 
   clip-path: polygon(
-    50% 0%,
-    100% 25%,
-    100% 75%,
-    50% 100%,
-    0% 75%,
-    0% 25%
+    50% 0%, 100% 25%, 100% 75%,
+    50% 100%, 0% 75%, 0% 25%
   );
 
   display: flex;
@@ -85,26 +76,22 @@ html, body {
   justify-content: center;
 
   cursor: pointer;
-
-  /* IMPORTANT: prevent any animation/movement */
   transition: none;
   transform: translate(-50%, -50%);
 }
 
-/* ICON */
 .hex img {
   width: 60%;
   height: 60%;
   object-fit: contain;
 }
 
-/* ACTIVE = NO VISUAL CHANGE THAT AFFECTS LAYOUT */
 .hex.active {
-  box-shadow: none;
   transform: translate(-50%, -50%);
+  box-shadow: none;
 }
 
-/* HEX POSITIONS (NO LAYOUT SHIFT RISK) */
+/* Positions */
 .n1 { top: 0%; left: 50%; }
 .n2 { top: 25%; left: 90%; }
 .n3 { top: 75%; left: 90%; }
@@ -112,18 +99,22 @@ html, body {
 .n5 { top: 75%; left: 10%; }
 .n6 { top: 25%; left: 10%; }
 
-/* REMOVE LINK FOCUS SHIFT */
-.hex:focus {
-  outline: none;
-}
+.hex:focus { outline: none; }
 
-/* FOOTER */
+/* Footer */
 .footer {
   height: 110px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 22px;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
 }
 
 .arrow, .home {
@@ -150,24 +141,20 @@ html, body {
   </div>
 
   <div class="hex-ring glass">
-
     <a class="hex n1" href="#" data-page="gc"><img src="pic/gc.jpg"></a>
     <a class="hex n2" href="#" data-page="hplc"><img src="pic/hplc.jpg"></a>
-    <a class="hex n3" href="#" data-page="scale"><img src="pic/scale.jpg"></a>
+    <a class="hex n3" href="#" data-page="ms"><img src="pic/scale.jpg"></a>
     <a class="hex n4" href="#" data-page="uv"><img src="pic/uv.jpg"></a>
-    <a class="hex n5" href="#" data-page="scale"><img src="pic/scale.jpg"></a>
+    <a class="hex n5" href="#" data-page="ms"><img src="pic/scale.jpg"></a>
     <a class="hex n6" href="#" data-page="hplc"><img src="pic/hplc.jpg"></a>
-
   </div>
 
 </div>
 
 <div class="footer">
-   <div class="analytic"><h4>Analytic</h4></div>
-  <div class="arrow">⬅</div>
-  <div class="home">⌂</div>
-  <div class="arrow">➡</div>
-   <div class="analytic"><h4>Periods Table</h4></div>
+  <div class="control">⚗️ <span class="arrow">⬅</span></div>
+  <div class="control">🧪 <span class="home">⌂</span></div>
+  <div class="control">🔬 <span class="arrow">➡</span></div>
 </div>
 
 </div>
@@ -177,10 +164,50 @@ const hexes = document.querySelectorAll(".hex");
 const mainBox = document.querySelector(".main-box");
 
 const pages = {
-  gc: `<h2>Gas Chromatography (GC)</h2><p>Used for separating and analyzing volatile compounds in samples.</p>`,
-  hplc: `<h2>HPLC Analysis</h2><p>High Performance Liquid Chromatography for complex chemical mixtures.</p>`,
-  scale: `<h2>Mass / Scale Analysis</h2><p>Used for molecular mass detection and quantitative analysis.</p>`,
-  uv: `<h2>UV Spectroscopy</h2><p>Measures light absorption in ultraviolet range for chemical identification.</p>`
+
+  gc: `
+    <h2>Gas Chromatography (GC)</h2>
+    <p>Gas Chromatography separates compounds that can be vaporized.</p>
+    <ul>
+      <li>Analyzes volatile substances</li>
+      <li>Used in environmental and forensic testing</li>
+      <li>High sensitivity and accuracy</li>
+    </ul>
+    <p><a href="https://microbenotes.com/gas-chromatography-gc-principle-instrumentation-applications/" target="_blank">Learn more</a></p>
+  `,
+
+  hplc: `
+    <h2>HPLC Analysis</h2>
+    <p>High Performance Liquid Chromatography separates compounds in liquid samples under pressure.</p>
+    <ul>
+      <li>Widely used in pharmaceuticals</li>
+      <li>High precision separation</li>
+      <li>Works with non-volatile compounds</li>
+    </ul>
+    <p><a href="https://microbenotes.com/high-performance-liquid-chromatography-hplc-principle-instrumentation-applications/" target="_blank">Learn more</a></p>
+  `,
+
+  ms: `
+    <h2>Mass Spectrometry</h2>
+    <p>Mass Spectrometry identifies molecules by measuring mass-to-charge ratios.</p>
+    <ul>
+      <li>Determines molecular structure</li>
+      <li>Highly sensitive detection</li>
+      <li>Used in chemistry and biology</li>
+    </ul>
+    <p><a href="https://microbenotes.com/mass-spectrometry-principle-instrumentation-applications/" target="_blank">Learn more</a></p>
+  `,
+
+  uv: `
+    <h2>UV Spectroscopy</h2>
+    <p>Measures how substances absorb ultraviolet light.</p>
+    <ul>
+      <li>Detects concentration of compounds</li>
+      <li>Fast and simple analysis</li>
+      <li>Used in chemistry and biology</li>
+    </ul>
+    <p><a href="https://microbenotes.com/uv-spectroscopy-principle-instrumentation-applications/" target="_blank">Learn more</a></p>
+  `
 };
 
 hexes.forEach(hex => {
