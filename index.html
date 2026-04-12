@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>The world of chemical Analysis</title>
+<title>Hex Ring Chemical UI</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
@@ -56,13 +56,14 @@ html, body {
   border-radius: 20px;
 }
 
-/* HEX */
+/* HEX RING */
 .hex-ring {
   position: relative;
   width: 280px;
   height: 280px;
 }
 
+/* HEX BUTTONS */
 .hex {
   position: absolute;
   width: 70px;
@@ -92,13 +93,44 @@ html, body {
   box-shadow: 0 0 15px #9be7ff;
 }
 
-/* Positions */
+/* HEX POSITIONS */
 .n1 { top: 0%; left: 50%; }
 .n2 { top: 25%; left: 90%; }
 .n3 { top: 75%; left: 90%; }
 .n4 { top: 100%; left: 50%; }
 .n5 { top: 75%; left: 10%; }
 .n6 { top: 25%; left: 10%; }
+
+/* 🧠 CENTER ICON */
+.center-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 75px;
+  height: 75px;
+
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+
+  background: white;
+  border: 2px solid #9be7ff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+  cursor: pointer;
+
+  box-shadow: 0 0 15px rgba(155, 231, 255, 0.5);
+  transition: 0.3s;
+}
+
+.center-icon:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 0 25px #9be7ff;
+}
 
 /* FOOTER */
 .footer {
@@ -121,7 +153,7 @@ html, body {
   cursor: pointer;
 }
 
-/* TABLE STYLE */
+/* TABLE */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -156,10 +188,10 @@ th {
   <!-- MAIN BOX -->
   <div style="flex:1;">
     <div class="main-box glass" id="mainBox">
-      <!-- HOME CONTENT (includes table) -->
+
       <div id="homeContent">
-        <h3>Laboratoral techniques</h3>
-        <h5>When working in a laboratory, choosing the correct analytical method is essential for obtaining accurate, reliable, and meaningful results. Each technique serves a specific purpose depending on the type of sample, the information needed, and the required sensitivity.In the table below you can compare the different techniques. </h5>
+        <h3>Analysis Core</h3>
+        <p>Select a chemical method from the hex ring interface.</p>
 
         <h3 style="margin-top:25px;">Method Comparison</h3>
 
@@ -188,24 +220,26 @@ th {
         </div>
 
       </div>
+
     </div>
   </div>
 
   <!-- HEX RING -->
-<div class="hex-ring glass">
+  <div class="hex-ring glass">
 
-  <div class="center-icon" id="periodicCenter">
-    ⚛️
+    <!-- CENTER ICON -->
+    <div class="center-icon" id="periodicCenter">
+      ⚛️
+    </div>
+
+    <a class="hex n1" href="#" data-page="gc"><img src="pic/gc.jpg"></a>
+    <a class="hex n2" href="#" data-page="hplc"><img src="pic/hplc.jpg"></a>
+    <a class="hex n3" href="#" data-page="ms"><img src="pic/scale.jpg"></a>
+    <a class="hex n4" href="#" data-page="uv"><img src="pic/uv.jpg"></a>
+    <a class="hex n5" href="#" data-page="ms"><img src="pic/scale.jpg"></a>
+    <a class="hex n6" href="#" data-page="hplc"><img src="pic/hplc.jpg"></a>
+
   </div>
-
-  <a class="hex n1" href="#" data-page="gc"><img src="pic/gc.jpg"></a>
-  <a class="hex n2" href="#" data-page="hplc"><img src="pic/hplc.jpg"></a>
-  <a class="hex n3" href="#" data-page="ms"><img src="pic/scale.jpg"></a>
-  <a class="hex n4" href="#" data-page="uv"><img src="pic/uv.jpg"></a>
-  <a class="hex n5" href="#" data-page="ms"><img src="pic/scale.jpg"></a>
-  <a class="hex n6" href="#" data-page="hplc"><img src="pic/hplc.jpg"></a>
-
-</div>
 
 </div>
 
@@ -230,59 +264,11 @@ let currentIndex = -1;
 let currentHexIndex = 0;
 
 const pages = {
-
-  gc: `
-    <h2>Gas Chromatography (GC)</h2>
-    <p>Separates compounds that can be vaporized.</p>
-    <ul>
-      <li>Analyzes volatile substances</li>
-      <li>Environmental & forensic use</li>
-      <li>High sensitivity</li>
-    </ul>
-  `,
-
-  hplc: `
-    <h2>HPLC Analysis</h2>
-    <p>Separates compounds in liquid samples under pressure.</p>
-    <ul>
-      <li>Pharmaceutical standard</li>
-      <li>High precision</li>
-      <li>Non-volatile compounds</li>
-    </ul>
-  `,
-
-  ms: `
-    <h2>Mass Spectrometry</h2>
-    <p>Identifies molecules by mass-to-charge ratio.</p>
-    <ul>
-      <li>Structure analysis</li>
-      <li>Highly sensitive</li>
-      <li>Chemistry & biology</li>
-    </ul>
-  `,
-
-  uv: `
-    <h2>UV Spectroscopy</h2>
-    <p>Measures UV light absorption.</p>
-    <ul>
-      <li>Concentration detection</li>
-      <li>Fast analysis</li>
-      <li>Widely used</li>
-    </ul>
-  `
+  gc: `<h2>Gas Chromatography (GC)</h2><p>Separates volatile compounds.</p>`,
+  hplc: `<h2>HPLC</h2><p>Liquid separation under pressure.</p>`,
+  ms: `<h2>Mass Spectrometry</h2><p>Molecular identification.</p>`,
+  uv: `<h2>UV Spectroscopy</h2><p>Light absorption analysis.</p>`
 };
-
-function loadPage(pageKey) {
-  if (!pages[pageKey]) return;
-
-  mainBox.innerHTML = pages[pageKey];
-
-  if (historyStack[currentIndex] !== pageKey) {
-    historyStack = historyStack.slice(0, currentIndex + 1);
-    historyStack.push(pageKey);
-    currentIndex++;
-  }
-}
 
 // HEX CLICK
 hexes.forEach((hex, index) => {
@@ -293,45 +279,29 @@ hexes.forEach((hex, index) => {
     hex.classList.add("active");
 
     const page = hex.getAttribute("data-page");
-    loadPage(page);
+    mainBox.innerHTML = pages[page];
 
     currentHexIndex = index;
   });
 });
 
-// BACK
-document.getElementById("back").onclick = () => {
-  if (currentIndex > 0) {
-    currentIndex--;
-    mainBox.innerHTML = pages[historyStack[currentIndex]];
-  }
-};
-
-// FORWARD
-document.getElementById("forward").onclick = () => {
-  currentHexIndex = (currentHexIndex + 1) % hexes.length;
-  hexes[currentHexIndex].click();
-};
-
-// HOME (RESTORES TABLE)
+// HOME
 document.getElementById("home").onclick = () => {
   mainBox.innerHTML = homeContent.innerHTML;
-
   hexes.forEach(h => h.classList.remove("active"));
-  historyStack = [];
-  currentIndex = -1;
+};
+
+// CENTER ICON ACTION
+document.getElementById("periodicCenter").onclick = () => {
+  mainBox.innerHTML = `
+    <h2>Periodic Core Activated</h2>
+    <p>Central atomic navigation system online.</p>
+  `;
 };
 
 // ANALYTICS
 document.getElementById("analytics").onclick = () => {
-  mainBox.innerHTML = `
-    <h2>Analytics Dashboard</h2>
-    <ul>
-      <li>Sample throughput</li>
-      <li>Instrument efficiency</li>
-      <li>Data trends</li>
-    </ul>
-  `;
+  mainBox.innerHTML = `<h2>Analytics Dashboard</h2>`;
 };
 
 // PERIODIC TABLE
