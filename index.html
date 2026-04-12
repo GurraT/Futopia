@@ -21,7 +21,6 @@ html, body {
   overflow: hidden;
 }
 
-/* PAGE */
 .container {
   height: 100vh;
   display: flex;
@@ -29,7 +28,6 @@ html, body {
   padding: 15px 40px 0 40px;
 }
 
-/* TITLE */
 .title {
   margin: 0;
   font-size: 26px;
@@ -42,25 +40,21 @@ html, body {
   margin: 10px 0 20px;
 }
 
-/* LAYOUT */
 .layout {
   flex: 1;
   display: flex;
   gap: 30px;
 }
 
-/* MAIN */
 .main-box {
   height: 70vh;
   flex: 1;
   padding: 40px;
 }
 
-/* GLASS (NO EFFECTS) */
+/* NO EFFECTS */
 .glass {
   border-radius: 20px;
-  position: relative;
-  overflow: hidden;
 }
 
 /* HEX RING */
@@ -70,7 +64,7 @@ html, body {
   height: 280px;
 }
 
-/* HEX BUTTON (FLAT - NO EFFECTS) */
+/* HEX BUTTON */
 .hex {
   position: absolute;
   width: 70px;
@@ -91,6 +85,10 @@ html, body {
   justify-content: center;
 
   cursor: pointer;
+
+  /* IMPORTANT: prevent any animation/movement */
+  transition: none;
+  transform: translate(-50%, -50%);
 }
 
 /* ICON */
@@ -100,19 +98,24 @@ html, body {
   object-fit: contain;
 }
 
-/* NO ACTIVE EFFECT */
+/* ACTIVE = NO VISUAL CHANGE THAT AFFECTS LAYOUT */
 .hex.active {
-  transform: none;
   box-shadow: none;
+  transform: translate(-50%, -50%);
 }
 
-/* HEX POSITIONS */
-.n1 { top: 0%; left: 50%; transform: translate(-50%, 0); }
-.n2 { top: 25%; left: 90%; transform: translate(-50%, -50%); }
-.n3 { top: 75%; left: 90%; transform: translate(-50%, -50%); }
-.n4 { top: 100%; left: 50%; transform: translate(-50%, -100%); }
-.n5 { top: 75%; left: 10%; transform: translate(-50%, -50%); }
-.n6 { top: 25%; left: 10%; transform: translate(-50%, -50%); }
+/* HEX POSITIONS (NO LAYOUT SHIFT RISK) */
+.n1 { top: 0%; left: 50%; }
+.n2 { top: 25%; left: 90%; }
+.n3 { top: 75%; left: 90%; }
+.n4 { top: 100%; left: 50%; }
+.n5 { top: 75%; left: 10%; }
+.n6 { top: 25%; left: 10%; }
+
+/* REMOVE LINK FOCUS SHIFT */
+.hex:focus {
+  outline: none;
+}
 
 /* FOOTER */
 .footer {
@@ -123,16 +126,9 @@ html, body {
   gap: 22px;
 }
 
-/* NO HOVER EFFECTS */
 .arrow, .home {
   font-size: 34px;
   cursor: pointer;
-}
-
-/* REMOVE ANIMATIONS */
-.arrow:hover {
-  transform: none;
-  color: inherit;
 }
 </style>
 </head>
@@ -146,7 +142,6 @@ html, body {
 
 <div class="layout">
 
-  <!-- MAIN PANEL -->
   <div style="flex:1;">
     <div class="main-box glass">
       <h3>Analysis Core</h3>
@@ -154,38 +149,19 @@ html, body {
     </div>
   </div>
 
-  <!-- HEX RING -->
   <div class="hex-ring glass">
 
-    <a class="hex n1" href="#" data-page="gc">
-      <img src="pic/gc.jpg">
-    </a>
-
-    <a class="hex n2" href="#" data-page="hplc">
-      <img src="pic/hplc.jpg">
-    </a>
-
-    <a class="hex n3" href="#" data-page="scale">
-      <img src="pic/scale.jpg">
-    </a>
-
-    <a class="hex n4" href="#" data-page="uv">
-      <img src="pic/uv.jpg">
-    </a>
-
-    <a class="hex n5" href="#" data-page="scale">
-      <img src="pic/scale.jpg">
-    </a>
-
-    <a class="hex n6" href="#" data-page="hplc">
-      <img src="pic/hplc.jpg">
-    </a>
+    <a class="hex n1" href="#" data-page="gc"><img src="pic/gc.jpg"></a>
+    <a class="hex n2" href="#" data-page="hplc"><img src="pic/hplc.jpg"></a>
+    <a class="hex n3" href="#" data-page="scale"><img src="pic/scale.jpg"></a>
+    <a class="hex n4" href="#" data-page="uv"><img src="pic/uv.jpg"></a>
+    <a class="hex n5" href="#" data-page="scale"><img src="pic/scale.jpg"></a>
+    <a class="hex n6" href="#" data-page="hplc"><img src="pic/hplc.jpg"></a>
 
   </div>
 
 </div>
 
-<!-- FOOTER -->
 <div class="footer">
   <div class="arrow">⬅</div>
   <div class="home">⌂</div>
@@ -199,22 +175,10 @@ const hexes = document.querySelectorAll(".hex");
 const mainBox = document.querySelector(".main-box");
 
 const pages = {
-  gc: `
-    <h2>Gas Chromatography (GC)</h2>
-    <p>Used for separating and analyzing volatile compounds in samples.</p>
-  `,
-  hplc: `
-    <h2>HPLC Analysis</h2>
-    <p>High Performance Liquid Chromatography for complex chemical mixtures.</p>
-  `,
-  scale: `
-    <h2>Mass / Scale Analysis</h2>
-    <p>Used for molecular mass detection and quantitative analysis.</p>
-  `,
-  uv: `
-    <h2>UV Spectroscopy</h2>
-    <p>Measures light absorption in ultraviolet range for chemical identification.</p>
-  `
+  gc: `<h2>Gas Chromatography (GC)</h2><p>Used for separating and analyzing volatile compounds in samples.</p>`,
+  hplc: `<h2>HPLC Analysis</h2><p>High Performance Liquid Chromatography for complex chemical mixtures.</p>`,
+  scale: `<h2>Mass / Scale Analysis</h2><p>Used for molecular mass detection and quantitative analysis.</p>`,
+  uv: `<h2>UV Spectroscopy</h2><p>Measures light absorption in ultraviolet range for chemical identification.</p>`
 };
 
 hexes.forEach(hex => {
