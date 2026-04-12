@@ -3,14 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Futuristic UI</title>
+  <title>Futuristic Glass UI</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      background: #000;
-      color: #ccc;
       font-family: 'Orbitron', sans-serif;
+      color: #e6f7ff;
+      background: radial-gradient(circle at 30% 30%, #0a0f1f, #000 70%);
+      overflow-x: hidden;
+    }
+
+    /* subtle grid background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(rgba(0,255,255,0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,255,255,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
     }
 
     .container {
@@ -19,12 +31,12 @@
 
     h1 {
       color: #fff;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
     }
 
     .divider {
       height: 1px;
-      background: #666;
+      background: linear-gradient(90deg, transparent, cyan, transparent);
       margin: 20px 0 40px;
     }
 
@@ -35,8 +47,16 @@
       align-items: start;
     }
 
+    /* GLASS EFFECT */
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(0,255,255,0.2);
+      box-shadow: 0 0 25px rgba(0,255,255,0.08);
+    }
+
     .main-box {
-      border: 2px solid #888;
       border-radius: 30px;
       padding: 40px;
       text-align: center;
@@ -44,115 +64,58 @@
     }
 
     .side-box {
-      border: 2px solid #888;
       border-radius: 30px;
       padding: 30px;
       text-align: center;
       min-height: 200px;
     }
 
+    /* HEX RING */
     .icons {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin-left: auto;
       margin-bottom: 20px;
     }
 
-    .icon {
-      width: 50px;
-      height: 50px;
-      border: 1px solid #777;
+    .hex {
+      position: absolute;
+      width: 55px;
+      height: 60px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(0,255,255,0.3);
+      clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 10px;
-      font-size: 20px;
+      font-size: 18px;
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
     }
 
+    .hex:hover {
+      box-shadow: 0 0 20px cyan;
+      transform: scale(1.15);
+    }
+
+    .hex.center {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,255,255,0.15);
+    }
+
+    .hex.h1 { top: 0%; left: 50%; transform: translate(-50%, 0); }
+    .hex.h2 { top: 25%; left: 85%; transform: translate(-50%, -50%); }
+    .hex.h3 { top: 75%; left: 85%; transform: translate(-50%, -50%); }
+    .hex.h4 { top: 100%; left: 50%; transform: translate(-50%, -100%); }
+    .hex.h5 { top: 75%; left: 15%; transform: translate(-50%, -50%); }
+    .hex.h6 { top: 25%; left: 15%; transform: translate(-50%, -50%); }
+
+    /* CONTROLS */
     .controls {
       margin-top: 30px;
       display: flex;
       justify-content: center;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .btn {
-      width: 120px;
-      height: 40px;
-      border: 1px solid #777;
-      border-radius: 10px;
-    }
-
-    .arrow {
-      font-size: 30px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .arrow:hover {
-      color: #fff;
-      transform: scale(1.2);
-    }
-
-    .home {
-      font-size: 30px;
-    }
-
-    /* Glow effect */
-    .main-box, .side-box, .btn, .icon {
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
-      transition: 0.3s;
-    }
-
-    .main-box:hover, .side-box:hover, .btn:hover {
-      box-shadow: 0 0 20px rgba(0,255,255,0.5);
-      border-color: cyan;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <h1>HOMEPAGE</h1>
-    <div class="divider"></div>
-
-    <div class="icons">
-      <div class="icon">📊</div>
-      <div class="icon">📁</div>
-      <div class="icon">📋</div>
-      <div class="icon">🔍</div>
-    </div>
-
-    <div class="layout">
-      <div>
-        <div class="main-box">
-          <h3>Main DIV</h3>
-          <p>
-            Futuristic content goes here.<br>
-            Replace with real data, dashboard or visuals.
-          </p>
-        </div>
-
-        <div class="controls">
-          <div class="btn"></div>
-          <div class="arrow">⬅</div>
-          <div class="home">⌂</div>
-          <div class="arrow">➡</div>
-          <div class="btn"></div>
-        </div>
-      </div>
-
-      <div class="side-box">
-        <h3>Side div</h3>
-        <p>
-          Secondary content<br>
-          Links / Stats / Info
-        </p>
-      </div>
-    </div>
-
-  </div>
-
-</body>
-</html>
+      align-items: c
