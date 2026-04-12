@@ -56,9 +56,8 @@ html, body {
   padding: 40px;
 }
 
-/* GLASS */
+/* GLASS (NO EFFECTS) */
 .glass {
-  backdrop-filter: blur(20px);
   border-radius: 20px;
   position: relative;
   overflow: hidden;
@@ -71,13 +70,12 @@ html, body {
   height: 280px;
 }
 
-/* HEX BUTTON */
+/* HEX BUTTON (FLAT - NO EFFECTS) */
 .hex {
   position: absolute;
   width: 70px;
   height: 70px;
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(10px);
+  background: #ffffff;
 
   clip-path: polygon(
     50% 0%,
@@ -93,7 +91,6 @@ html, body {
   justify-content: center;
 
   cursor: pointer;
-  transition: 0.25s;
 }
 
 /* ICON */
@@ -103,11 +100,10 @@ html, body {
   object-fit: contain;
 }
 
-/* ACTIVE EFFECT */
+/* NO ACTIVE EFFECT */
 .hex.active {
-  transform: scale(1.15);
-  box-shadow: 0 0 20px #00e5ff, 0 0 40px #00e5ff;
-  z-index: 10;
+  transform: none;
+  box-shadow: none;
 }
 
 /* HEX POSITIONS */
@@ -127,19 +123,16 @@ html, body {
   gap: 22px;
 }
 
+/* NO HOVER EFFECTS */
 .arrow, .home {
   font-size: 34px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
+/* REMOVE ANIMATIONS */
 .arrow:hover {
-  color: #00bcd4;
-  transform: scale(1.25);
-}
-
-.home {
-  font-size: 38px;
+  transform: none;
+  color: inherit;
 }
 </style>
 </head>
@@ -232,7 +225,6 @@ hexes.forEach(hex => {
     hex.classList.add("active");
 
     const page = hex.getAttribute("data-page");
-
     mainBox.innerHTML = pages[page] || "<p>No data found</p>";
   });
 });
