@@ -9,140 +9,134 @@
 
 <style>
 * {
-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html, body {
-margin: 0;
-padding: 0;
-height: 100%;
-font-family: 'Orbitron', sans-serif;
-background: radial-gradient(circle at center, #eef5ff, #ffffff);
-overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Orbitron', sans-serif;
+  background: radial-gradient(circle at center, #eef5ff, #ffffff);
+  overflow: hidden;
 }
 
 /* PAGE */
 .container {
-height: 100vh;
-display: flex;
-flex-direction: column;
-padding: 15px 40px 0 40px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 40px 0 40px;
 }
 
 /* TITLE */
 .title {
-margin: 0;
-font-size: 26px;
-letter-spacing: 3px;
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 3px;
 }
 
 .divider {
-height: 2px;
-background: linear-gradient(90deg, transparent, #9be7ff, transparent);
-margin: 10px 0 20px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #9be7ff, transparent);
+  margin: 10px 0 20px;
 }
 
 /* LAYOUT */
 .layout {
-flex: 1;
-display: flex;
-gap: 30px;
-position: relative;
+  flex: 1;
+  display: flex;
+  gap: 30px;
 }
 
 /* MAIN */
 .main-box {
-height: 70vh;
-flex: 1;
-padding: 40px;
+  height: 70vh;
+  flex: 1;
+  padding: 40px;
 }
 
 /* GLASS */
 .glass {
-backdrop-filter: blur(20px);
-border-radius: 20px;
-position: relative;
-overflow: hidden;
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-/* ========================= */
-/* HEXAGON RING SYSTEM */
-/* ========================= */
-
+/* HEX RING */
 .hex-ring {
-position: absolute;
-right: 40px;
-top: 50%;
-transform: translateY(-50%);
-width: 280px;
-height: 280px;
+  position: relative;
+  width: 280px;
+  height: 280px;
 }
 
-/* subtle ring guide */
-.hex-ring::before {
-content: "";
-position: absolute;
-inset: 0;
-border-radius: 50%;
-}
-
-/* HEX ICON */
+/* HEX BUTTON */
 .hex {
-padding: 5px;
-background: rgba(255,255,255,0.6);
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
+
+  clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    100% 75%,
+    50% 100%,
+    0% 75%,
+    0% 25%
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.25s;
 }
 
+.hex:hover {
+  transform: scale(1.1);
+}
+
+/* ICON */
 .hex img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-border-radius: 6px;
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
 }
 
-clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-
-display: flex;
-align-items: center;
-justify-content: center;
-
-backdrop-filter: blur(10px);
-transition: 0.25s;
-}
-
-
-
-/* TRUE HEXAGON RING POSITIONING */
+/* HEX POSITIONS */
 .n1 { top: 0%; left: 50%; transform: translate(-50%, 0); }
-.n2 { top: 25%; left: 85%; transform: translate(-50%, -50%); }
-.n3 { top: 75%; left: 85%; transform: translate(-50%, -50%); }
+.n2 { top: 25%; left: 90%; transform: translate(-50%, -50%); }
+.n3 { top: 75%; left: 90%; transform: translate(-50%, -50%); }
 .n4 { top: 100%; left: 50%; transform: translate(-50%, -100%); }
-.n5 { top: 75%; left: 15%; transform: translate(-50%, -50%); }
-.n6 { top: 25%; left: 15%; transform: translate(-50%, -50%); }
+.n5 { top: 75%; left: 10%; transform: translate(-50%, -50%); }
+.n6 { top: 25%; left: 10%; transform: translate(-50%, -50%); }
 
-/* FOOTER (BIGGER CONTROLS) */
+/* FOOTER */
 .footer {
-height: 110px;
-display: flex;
-justify-content: center;
-align-items: center;
-gap: 22px;
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
 }
 
 .arrow, .home {
-font-size: 34px;
-cursor: pointer;
-transition: 0.2s;
+  font-size: 34px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .arrow:hover {
-color: #00bcd4;
-transform: scale(1.25);
+  color: #00bcd4;
+  transform: scale(1.25);
 }
 
 .home {
-font-size: 38px;
+  font-size: 38px;
 }
-
 </style>
 </head>
 
@@ -155,33 +149,31 @@ font-size: 38px;
 
 <div class="layout">
 
-<!-- MAIN -->
-<div style="flex:1;">
-  <div class="main-box glass">
-    <h3>Analysis Core</h3>
-    <p>Select a chemical method from the hex ring interface.</p>
+  <!-- MAIN -->
+  <div style="flex:1;">
+    <div class="main-box glass">
+      <h3>Analysis Core</h3>
+      <p>Select a chemical method from the hex ring interface.</p>
+    </div>
   </div>
-</div>
 
-<!-- HEX RING -->
-<div class="hex-ring glass">
-
-  <a class="hex n1" href="#"><img src="/pic/gc.jpg"></a>
-  <a class="hex n2" href="#"><img src="/pic/hplc.jpg"></a>
-  <a class="hex n3" href="#"><img src="/pic/scale.jpg"></a>
-  <a class="hex n4" href="#"><img src="/pic/uv.jpg"></a>
-  <a class="hex n5" href="#"><img src="https://img.icons8.com/ios-filled/50/visible-spectrum.png"></a>
-  <a class="hex n6" href="#"><img src="https://img.icons8.com/ios-filled/50/x-ray.png"></a>
-
-</div>
+  <!-- HEX RING -->
+  <div class="hex-ring glass">
+    <a class="hex n1" href="#"><img src="/pic/gc.jpg"></a>
+    <a class="hex n2" href="#"><img src="/pic/hplc.jpg"></a>
+    <a class="hex n3" href="#"><img src="/pic/scale.jpg"></a>
+    <a class="hex n4" href="#"><img src="/pic/uv.jpg"></a>
+    <a class="hex n5" href="#"><img src="https://img.icons8.com/ios-filled/50/visible-spectrum.png"></a>
+    <a class="hex n6" href="#"><img src="https://img.icons8.com/ios-filled/50/x-ray.png"></a>
+  </div>
 
 </div>
 
 <!-- FOOTER -->
 <div class="footer">
-<div class="arrow">⬅</div>
-<div class="home">⌂</div>
-<div class="arrow">➡</div>
+  <div class="arrow">⬅</div>
+  <div class="home">⌂</div>
+  <div class="arrow">➡</div>
 </div>
 
 </div>
