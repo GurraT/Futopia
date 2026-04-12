@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-/* GLOBAL RESET */
 * {
 box-sizing: border-box;
 }
@@ -21,20 +20,16 @@ height: 100%;
 
 body {
 font-family: 'Orbitron', sans-serif;
-color: #0f172a;
 background: linear-gradient(135deg, #dfe9f3, #ffffff);
-perspective: 1200px;
+color: #0f172a;
 }
 
-/* CONTAINER (NO BOTTOM SPACE) */
+/* CONTAINER */
 .container {
+height: 100vh;
 padding: 15px 40px 0 40px;
-margin: 0;
-}
-
-/* TYPOGRAPHY RESET (removes hidden spacing) */
-h3, p {
-margin: 0;
+display: flex;
+flex-direction: column;
 }
 
 /* TITLE */
@@ -50,26 +45,87 @@ background: linear-gradient(90deg, transparent, #9be7ff, transparent);
 margin: 10px 0 20px;
 }
 
-/* LAYOUT */
+/* LAYOUT AREA */
 .layout {
-position: relative;
+flex: 1;
 display: flex;
 gap: 30px;
-align-items: flex-start;
-margin: 0;
-padding: 0;
+position: relative;
 }
 
-/* MAIN BOX */
+/* MAIN TAKES 70% HEIGHT */
 .main-box {
-padding: 40px;
-min-height: 250px;
+height: 70vh;
 flex: 1;
+padding: 40px;
 }
 
-/* CONTROLS (NO BOTTOM SPACE) */
-.controls {
-margin: 10px 0 0 0;
+/* GLASS */
+.glass {
+background: rgba(255, 255, 255, 0.35);
+backdrop-filter: blur(20px);
+border-radius: 20px;
+border: 1px solid rgba(255,255,255,0.7);
+box-shadow:
+inset 0 1px 3px rgba(255,255,255,0.9),
+inset 0 -1px 2px rgba(0,0,0,0.05),
+0 10px 30px rgba(0,0,0,0.1);
+overflow: hidden;
+position: relative;
+}
+
+.glass::before {
+content: "";
+position: absolute;
+inset: 0;
+background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.9), transparent 70%);
+opacity: 0.35;
+transform: translateX(-100%);
+animation: shine 6s infinite linear;
+}
+
+@keyframes shine {
+to { transform: translateX(100%); }
+}
+
+/* ICONS RIGHT SIDE (NO WRAPPER) */
+.hex {
+position: absolute;
+width: 34px;
+height: 38px;
+background: rgba(255,255,255,0.6);
+border: 1px solid rgba(255,255,255,0.9);
+clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+display: flex;
+align-items: center;
+justify-content: center;
+backdrop-filter: blur(10px);
+transition: 0.25s;
+transform: scale(0.9);
+}
+
+.hex img {
+width: 18px;
+height: 18px;
+}
+
+.hex:hover {
+transform: scale(1.25);
+}
+
+.icon-set { right: 40px; }
+
+.center { top: 20px; }
+.h1 { top: 100px; }
+.h2 { top: 180px; }
+.h3 { top: 260px; }
+.h4 { top: 340px; }
+.h5 { top: 420px; }
+.h6 { top: 500px; }
+
+/* FOOTER CONTROLS */
+.footer {
+height: 80px;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -92,73 +148,6 @@ color: #00bcd4;
 transform: scale(1.15);
 }
 
-/* GLASS EFFECT */
-.glass {
-background: rgba(255, 255, 255, 0.35);
-backdrop-filter: blur(20px);
-border-radius: 20px;
-border: 1px solid rgba(255,255,255,0.7);
-box-shadow:
-inset 0 1px 3px rgba(255,255,255,0.9),
-inset 0 -1px 2px rgba(0,0,0,0.05),
-0 10px 30px rgba(0,0,0,0.1);
-position: relative;
-overflow: hidden;
-}
-
-.glass::before {
-content: "";
-position: absolute;
-inset: 0;
-background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.9), transparent 70%);
-opacity: 0.35;
-transform: translateX(-100%);
-animation: shine 6s infinite linear;
-}
-
-@keyframes shine {
-to { transform: translateX(100%); }
-}
-
-/* HEX ICONS (NO WRAPPER DIV) */
-.hex {
-position: absolute;
-width: 34px;
-height: 38px;
-background: rgba(255,255,255,0.6);
-border: 1px solid rgba(255,255,255,0.9);
-clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-display: flex;
-align-items: center;
-justify-content: center;
-backdrop-filter: blur(10px);
-box-shadow: inset 0 1px 2px rgba(255,255,255,0.9);
-transition: 0.25s;
-transform: scale(0.9);
-}
-
-.hex img {
-width: 18px;
-height: 18px;
-}
-
-.hex:hover {
-transform: scale(1.25);
-}
-
-/* ICON POSITIONING (RIGHT SIDE STACK) */
-.icon-set {
-right: 40px;
-}
-
-.center { top: 20px; }
-.h1 { top: 90px; }
-.h2 { top: 160px; }
-.h3 { top: 230px; }
-.h4 { top: 300px; }
-.h5 { top: 370px; }
-.h6 { top: 440px; }
-
 </style>
 </head>
 
@@ -171,23 +160,15 @@ right: 40px;
 
 <div class="layout">
 
-  <!-- MAIN -->
+  <!-- MAIN (70% HEIGHT) -->
   <div style="flex:1;">
     <div class="main-box glass">
       <h3>Main DIV</h3>
       <p>Ultra realistic glass panel with lighting & depth.</p>
     </div>
-
-    <div class="controls">
-      <div class="btn glass"></div>
-      <div class="arrow">⬅</div>
-      <div class="home">⌂</div>
-      <div class="arrow">➡</div>
-      <div class="btn glass"></div>
-    </div>
   </div>
 
-  <!-- ICONS (NO WRAPPER DIVS) -->
+  <!-- ICONS (NO DIV WRAPPER) -->
   <a class="hex center icon-set" href="#"><img src="https://img.icons8.com/ios-filled/50/spectrometer.png"></a>
   <a class="hex h1 icon-set" href="#"><img src="https://img.icons8.com/ios-filled/50/test-tube.png"></a>
   <a class="hex h2 icon-set" href="#"><img src="https://img.icons8.com/ios-filled/50/molecule.png"></a>
@@ -196,6 +177,15 @@ right: 40px;
   <a class="hex h5 icon-set" href="#"><img src="https://img.icons8.com/ios-filled/50/laser-beam.png"></a>
   <a class="hex h6 icon-set" href="#"><img src="https://img.icons8.com/ios-filled/50/periodic-table.png"></a>
 
+</div>
+
+<!-- FOOTER CONTROLS -->
+<div class="footer">
+<div class="btn glass"></div>
+<div class="arrow">⬅</div>
+<div class="home">⌂</div>
+<div class="arrow">➡</div>
+<div class="btn glass"></div>
 </div>
 
 </div>
