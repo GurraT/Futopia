@@ -44,7 +44,6 @@ html, body {
   gap: 30px;
 }
 
-/* MAIN BOX */
 .main-box {
   height: 70vh;
   flex: 1;
@@ -72,11 +71,8 @@ html, body {
   transform: translate(-50%, -50%);
 }
 
-.hex img {
-  width: 60%;
-}
+.hex img { width: 60%; }
 
-/* positions */
 .n1 { top: 0%; left: 50%; }
 .n2 { top: 25%; left: 90%; }
 .n3 { top: 75%; left: 90%; }
@@ -84,7 +80,6 @@ html, body {
 .n5 { top: 75%; left: 10%; }
 .n6 { top: 25%; left: 10%; }
 
-/* center */
 .center-icon {
   position: absolute;
   top: 50%;
@@ -102,7 +97,7 @@ html, body {
   cursor: pointer;
 }
 
-/* footer */
+/* FOOTER */
 .footer {
   height: 110px;
   display: flex;
@@ -116,23 +111,21 @@ html, body {
   cursor: pointer;
 }
 
-/* periodic table */
+/* PERIODIC TABLE */
 .periodic {
   display: grid;
   grid-template-columns: repeat(18, 1fr);
   gap: 3px;
 }
 
-/* ELEMENT STYLE */
 .el {
   background: white;
   border: 1px solid #ddd;
   padding: 6px;
   font-size: 10px;
   text-align: center;
-  cursor: pointer;
   position: relative;
-  transition: 0.2s;
+  cursor: pointer;
 }
 
 /* COLORS */
@@ -142,7 +135,6 @@ html, body {
 .ms  { background: #ffe4cc; }
 .ir  { background: #fff4b3; }
 
-/* MULTI */
 .multi {
   box-shadow: 0 0 10px #9be7ff;
 }
@@ -155,11 +147,11 @@ html, body {
   transform: translateX(-50%);
   background: #222;
   color: white;
-  padding: 5px 8px;
+  padding: 4px 6px;
   font-size: 10px;
-  border-radius: 5px;
-  white-space: nowrap;
+  border-radius: 4px;
   display: none;
+  white-space: nowrap;
 }
 
 .el:hover .tooltip {
@@ -226,7 +218,7 @@ html, body {
 
 const mainBox = document.getElementById("mainBox");
 
-/* DETECTION MAP */
+/* DETECTION MAP (sample, extend anytime) */
 const detectionMap = {
   H:["MS"], He:["MS"],
   Li:["ICP-MS","AAS"], Be:["ICP-MS","AAS"],
@@ -240,89 +232,71 @@ const detectionMap = {
   Au:["ICP-MS","XRF"], Pb:["ICP-MS","AAS","XRF"]
 };
 
-/* HEX PAGES */
-const pages = {
-  gc:`<h2>GC</h2><p>Volatile compounds analysis.</p>`,
-  hplc:`<h2>HPLC</h2><p>Liquid phase separation.</p>`,
-  ms:`<h2>MS</h2><p>Molecular identification.</p>`,
-  uv:`<h2>UV</h2><p>Absorption spectroscopy.</p>`
-};
+/* ELEMENT CELL */
+function createElementCell(el){
+  const methods = detectionMap[el] || [];
 
-document.querySelectorAll(".hex").forEach(hex=>{
-  hex.onclick = () => {
-    mainBox.innerHTML = pages[hex.dataset.page];
-  };
-});
+  let color="";
+  if(methods.includes("ICP-MS")) color="icp";
+  else if(methods.includes("AAS")) color="aas";
+  else if(methods.includes("XRF")) color="xrf";
+  else if(methods.includes("MS")) color="ms";
+  else if(methods.includes("IR")) color="ir";
 
-/* HOME */
-document.getElementById("home").onclick = () => {
-  mainBox.innerHTML = `
-    <h3>Laboratory techniques</h3>
-    <p style="max-width:700px;">
-      Choose the right analytical method based on your sample and goal.
-    </p>
+  const multi = methods.length>1 ? "multi":"";
 
-    <div style="overflow:auto; max-height:45vh;">
-      <table class="styled-table">
-        <thead>
-          <tr>
-            <th>Method</th><th>Best For</th><th>Sample</th><th>Strength</th><th>Limitation</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>GC</td><td>Volatile</td><td>Gas</td><td>Sensitive</td><td>Only volatile</td></tr>
-          <tr><td>HPLC</td><td>Non-volatile</td><td>Liquid</td><td>Precise</td><td>Expensive</td></tr>
-          <tr><td>MS</td><td>ID</td><td>All</td><td>Very sensitive</td><td>Complex</td></tr>
-          <tr><td>UV</td><td>Concentration</td><td>Solution</td><td>Fast</td><td>Needs color</td></tr>
-        </tbody>
-      </table>
+  return `
+    <div class="el ${color} ${multi}">
+      ${el}
+      <div class="tooltip">${methods.join(", ") || "No data"}</div>
     </div>
   `;
-};
+}
 
-/* PERIODIC TABLE */
+/* FULL PERIODIC TABLE */
 function renderPeriodic(){
 
 const layout = [
 ["H","","","","","","","","","","","","","","","","","He"],
 ["Li","Be","","","","","","","","","","","B","C","N","O","F","Ne"],
-["Na","Mg","","","","","","","","","","","Al","Si","P","S","Cl","Ar"]
+["Na","Mg","","","","","","","","","","","Al","Si","P","S","Cl","Ar"],
+["K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr"],
+["Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe"],
+["Cs","Ba","La*","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn"],
+["Fr","Ra","Ac*","Rf","Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn","Nh","Fl","Mc","Lv","Ts","Og"]
 ];
 
-let html = `<div class="periodic">`;
+const lan = ["La","Ce","Pr","Nd","Pm","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu"];
+const act = ["Ac","Th","Pa","U","Np","Pu","Am","Cm","Bk","Cf","Es","Fm","Md","No","Lr"];
 
-layout.forEach(row=>{
-  row.forEach(el=>{
-    if(!el) html+=`<div></div>`;
-    else{
-      const methods = detectionMap[el] || [];
-      let color = "";
-      if(methods.includes("ICP-MS")) color="icp";
-      else if(methods.includes("AAS")) color="aas";
-      else if(methods.includes("XRF")) color="xrf";
-      else if(methods.includes("MS")) color="ms";
-      else if(methods.includes("IR")) color="ir";
+let html = `<div style="display:flex; flex-direction:column; gap:15px;">`;
 
-      const multi = methods.length>1 ? "multi" : "";
+html += `<div class="periodic">`;
+layout.forEach(r=>r.forEach(el=>{
+  html += el ? createElementCell(el.replace("*","")) : `<div></div>`;
+}));
+html += `</div>`;
 
-      html+=`
-        <div class="el ${color} ${multi}">
-          ${el}
-          <div class="tooltip">${methods.join(", ") || "No data"}</div>
-        </div>
-      `;
-    }
-  });
-});
+html += `<div><b>Lanthanides</b><div class="periodic">`;
+lan.forEach(el=>html+=createElementCell(el));
+html += `</div></div>`;
 
-html+=`</div>`;
+html += `<div><b>Actinides</b><div class="periodic">`;
+act.forEach(el=>html+=createElementCell(el));
+html += `</div></div>`;
+
+html += `</div>`;
+
 mainBox.innerHTML = html;
 }
 
-/* BUTTONS */
-document.getElementById("center").onclick = renderPeriodic;
+/* HOME */
+document.getElementById("home").onclick = () => {
+  mainBox.innerHTML = "<h3>Welcome</h3><p>Select a tool or open the periodic table.</p>";
+};
+
 document.getElementById("period").onclick = renderPeriodic;
-document.getElementById("analytics").onclick = () => mainBox.innerHTML="<h2>Analytics</h2>";
+document.getElementById("center").onclick = renderPeriodic;
 
 /* LOAD HOME */
 document.getElementById("home").click();
