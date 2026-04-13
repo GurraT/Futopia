@@ -114,9 +114,6 @@ html, body {
 .control {
   font-size: 18px;
   cursor: pointer;
-  display: flex;
-  gap: 8px;
-  align-items: center;
 }
 
 /* periodic table */
@@ -126,6 +123,7 @@ html, body {
   gap: 3px;
 }
 
+/* ELEMENT STYLE */
 .el {
   background: white;
   border: 1px solid #ddd;
@@ -133,13 +131,42 @@ html, body {
   font-size: 10px;
   text-align: center;
   cursor: pointer;
+  position: relative;
+  transition: 0.2s;
 }
 
-.el:hover {
+/* COLORS */
+.icp { background: #d0f0ff; }
+.aas { background: #d8ffd8; }
+.xrf { background: #f3d8ff; }
+.ms  { background: #ffe4cc; }
+.ir  { background: #fff4b3; }
+
+/* MULTI */
+.multi {
   box-shadow: 0 0 10px #9be7ff;
 }
 
-/* TABLE STYLE */
+/* TOOLTIP */
+.tooltip {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: white;
+  padding: 5px 8px;
+  font-size: 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  display: none;
+}
+
+.el:hover .tooltip {
+  display: block;
+}
+
+/* TABLE */
 .styled-table {
   width: 100%;
   border-collapse: collapse;
@@ -151,17 +178,12 @@ html, body {
 .styled-table td {
   padding: 8px;
   border: 1px solid #ddd;
-  text-align: left;
 }
 
 .styled-table th {
   background: #eef5ff;
   position: sticky;
   top: 0;
-}
-
-.styled-table tr:hover {
-  background: #f5fbff;
 }
 </style>
 </head>
@@ -175,28 +197,23 @@ html, body {
 
 <div class="layout">
 
-  <!-- MAIN BOX -->
   <div style="flex:1;">
     <div class="main-box" id="mainBox"></div>
   </div>
 
-  <!-- HEX -->
   <div class="hex-ring">
-
     <div class="center-icon" id="center">¤</div>
 
-    <a class="hex n1" data-page="gc"><img src="pic/gc.jpg"></a>
-    <a class="hex n2" data-page="hplc"><img src="pic/hplc.jpg"></a>
-    <a class="hex n3" data-page="ms"><img src="pic/scale.jpg"></a>
-    <a class="hex n4" data-page="uv"><img src="pic/uv.jpg"></a>
-    <a class="hex n5" data-page="ms"><img src="pic/scale.jpg"></a>
-    <a class="hex n6" data-page="hplc"><img src="pic/hplc.jpg"></a>
-
+    <div class="hex n1" data-page="gc"><img src="pic/gc.jpg"></div>
+    <div class="hex n2" data-page="hplc"><img src="pic/hplc.jpg"></div>
+    <div class="hex n3" data-page="ms"><img src="pic/scale.jpg"></div>
+    <div class="hex n4" data-page="uv"><img src="pic/uv.jpg"></div>
+    <div class="hex n5" data-page="ms"><img src="pic/scale.jpg"></div>
+    <div class="hex n6" data-page="hplc"><img src="pic/hplc.jpg"></div>
   </div>
 
 </div>
 
-<!-- FOOTER -->
 <div class="footer">
   <div class="control" id="period">Periodic Table</div>
   <div class="control" id="home">⌂</div>
@@ -209,6 +226,20 @@ html, body {
 
 const mainBox = document.getElementById("mainBox");
 
+/* DETECTION MAP */
+const detectionMap = {
+  H:["MS"], He:["MS"],
+  Li:["ICP-MS","AAS"], Be:["ICP-MS","AAS"],
+  B:["ICP-MS"], C:["MS","IR"], N:["MS","IR"], O:["MS","IR"],
+  Na:["ICP-MS","AAS"], Mg:["ICP-MS","AAS"],
+  Al:["ICP-MS","AAS","XRF"], Si:["ICP-MS","XRF"],
+  P:["ICP-MS"], S:["ICP-MS","IR"], Cl:["ICP-MS"],
+  K:["ICP-MS","AAS"], Ca:["ICP-MS","AAS"],
+  Fe:["ICP-MS","AAS","XRF"], Cu:["ICP-MS","AAS","XRF"],
+  Zn:["ICP-MS","AAS"], Ag:["ICP-MS","AAS","XRF"],
+  Au:["ICP-MS","XRF"], Pb:["ICP-MS","AAS","XRF"]
+};
+
 /* HEX PAGES */
 const pages = {
   gc:`<h2>GC</h2><p>Volatile compounds analysis.</p>`,
@@ -217,11 +248,8 @@ const pages = {
   uv:`<h2>UV</h2><p>Absorption spectroscopy.</p>`
 };
 
-/* HEX CLICK */
 document.querySelectorAll(".hex").forEach(hex=>{
   hex.onclick = () => {
-    document.querySelectorAll(".hex").forEach(h=>h.classList.remove("active"));
-    hex.classList.add("active");
     mainBox.innerHTML = pages[hex.dataset.page];
   };
 });
@@ -230,42 +258,26 @@ document.querySelectorAll(".hex").forEach(hex=>{
 document.getElementById("home").onclick = () => {
   mainBox.innerHTML = `
     <h3>Laboratory techniques</h3>
-
-    <p style="max-width:700px; line-height:1.5;">
-      When working in a laboratory, choosing the correct analytical method is essential for obtaining accurate, reliable, and meaningful results.
-      Each technique serves a specific purpose depending on the type of sample, the information needed, and the required sensitivity.
-      In the table below you can compare the different techniques.
+    <p style="max-width:700px;">
+      Choose the right analytical method based on your sample and goal.
     </p>
 
-    <div style="overflow:auto; max-height: 45vh;">
+    <div style="overflow:auto; max-height:45vh;">
       <table class="styled-table">
         <thead>
           <tr>
-            <th>Method</th>
-            <th>Best For</th>
-            <th>Sample</th>
-            <th>Strength</th>
-            <th>Limitation</th>
+            <th>Method</th><th>Best For</th><th>Sample</th><th>Strength</th><th>Limitation</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>GC</td><td>Volatile compounds</td><td>Gas/liquid</td><td>High sensitivity</td><td>Only volatile</td></tr>
-          <tr><td>HPLC</td><td>Non-volatile mixtures</td><td>Liquid</td><td>High precision</td><td>Expensive</td></tr>
-          <tr><td>MS</td><td>Molecular ID</td><td>All</td><td>Very sensitive</td><td>Complex</td></tr>
-          <tr><td>UV-Vis</td><td>Concentration</td><td>Solution</td><td>Fast</td><td>Needs color</td></tr>
-          <tr><td>IR</td><td>Functional groups</td><td>All</td><td>Quick ID</td><td>Limited quant</td></tr>
-          <tr><td>NMR</td><td>Structure</td><td>Pure compounds</td><td>Detailed</td><td>Very expensive</td></tr>
-          <tr><td>ICP-MS</td><td>Trace metals</td><td>Liquid</td><td>Ultra sensitive</td><td>Element only</td></tr>
-          <tr><td>Titration</td><td>Concentration</td><td>Liquid</td><td>Accurate</td><td>Manual</td></tr>
+          <tr><td>GC</td><td>Volatile</td><td>Gas</td><td>Sensitive</td><td>Only volatile</td></tr>
+          <tr><td>HPLC</td><td>Non-volatile</td><td>Liquid</td><td>Precise</td><td>Expensive</td></tr>
+          <tr><td>MS</td><td>ID</td><td>All</td><td>Very sensitive</td><td>Complex</td></tr>
+          <tr><td>UV</td><td>Concentration</td><td>Solution</td><td>Fast</td><td>Needs color</td></tr>
         </tbody>
       </table>
     </div>
   `;
-};
-
-/* ANALYTICS */
-document.getElementById("analytics").onclick = () => {
-  mainBox.innerHTML = `<h2>Analytics Dashboard</h2><p>System performance overview.</p>`;
 };
 
 /* PERIODIC TABLE */
@@ -274,31 +286,45 @@ function renderPeriodic(){
 const layout = [
 ["H","","","","","","","","","","","","","","","","","He"],
 ["Li","Be","","","","","","","","","","","B","C","N","O","F","Ne"],
-["Na","Mg","","","","","","","","","","","Al","Si","P","S","Cl","Ar"],
-["K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr"],
-["Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe"],
-["Cs","Ba","La","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn"],
-["Fr","Ra","Ac","","","","","","","","","","","","","","",""]
+["Na","Mg","","","","","","","","","","","Al","Si","P","S","Cl","Ar"]
 ];
 
 let html = `<div class="periodic">`;
 
 layout.forEach(row=>{
   row.forEach(el=>{
-    if(el==="") html+=`<div></div>`;
-    else html+=`<div class="el">${el}</div>`;
+    if(!el) html+=`<div></div>`;
+    else{
+      const methods = detectionMap[el] || [];
+      let color = "";
+      if(methods.includes("ICP-MS")) color="icp";
+      else if(methods.includes("AAS")) color="aas";
+      else if(methods.includes("XRF")) color="xrf";
+      else if(methods.includes("MS")) color="ms";
+      else if(methods.includes("IR")) color="ir";
+
+      const multi = methods.length>1 ? "multi" : "";
+
+      html+=`
+        <div class="el ${color} ${multi}">
+          ${el}
+          <div class="tooltip">${methods.join(", ") || "No data"}</div>
+        </div>
+      `;
+    }
   });
 });
 
-html += `</div>`;
+html+=`</div>`;
 mainBox.innerHTML = html;
 }
 
 /* BUTTONS */
 document.getElementById("center").onclick = renderPeriodic;
 document.getElementById("period").onclick = renderPeriodic;
+document.getElementById("analytics").onclick = () => mainBox.innerHTML="<h2>Analytics</h2>";
 
-/* LOAD HOME ON START */
+/* LOAD HOME */
 document.getElementById("home").click();
 
 </script>
