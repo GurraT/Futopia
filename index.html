@@ -75,17 +75,21 @@ const mainBox=document.getElementById('mainBox');
 
 /* PAGES */
 const pages={
-  home:`<h2>Welcome</h2>` ,
-  gc:`<h2>Gas Chromatography</h2>` ,
-  lc:`<h2>Liquid Chromatography</h2>` ,
-  maldi:`<h2>MALDI</h2>` ,
-  uv:`<h2>Spectroscopy</h2>` ,
-  material:`<h2>Material Testing</h2>` ,
-  aas:`<h2>Atomic Absorption</h2>`
+  home:`<h2>Welcome</h2><p>Select a technique.</p>`,
+  gc:`<h2>Gas Chromatography (GC)</h2><p>Separation of volatile compounds.</p>`,
+  lc:`<h2>Liquid Chromatography (LC/HPLC)</h2><p>Separation in liquid phase.</p>`,
+  maldi:`<h2>MALDI</h2><p>Soft ionization mass spectrometry technique.</p>`,
+  uv:`<h2>Spectroscopy (UV-Vis)</h2><p>Measures absorbance vs wavelength.</p>`,
+  material:`<h2>Material Testing</h2><p>Mechanical properties analysis.</p>`,
+  aas:`<h2>Atomic Absorption Spectroscopy (AAS)</h2><p>Elemental analysis via absorption.</p>`
 };
 
 function loadPage(p){
-  mainBox.innerHTML=pages[p]||"Page not found";
+  if(!pages[p]){
+    mainBox.innerHTML = `<h3>Error</h3><p>Page "${p}" not found.</p>`;
+    return;
+  }
+  mainBox.innerHTML = pages[p];
 }
 
 /* detection map updated */
@@ -145,7 +149,8 @@ function createElement(el){
 }
 
 function renderPeriodic(){
-const layout=[
+
+const layout = [
 ["H","","","","","","","","","","","","","","","","","He"],
 ["Li","Be","","","","","","","","","","","B","C","N","O","",""],
 ["Na","Mg","","","","","","","","","","","Al","Si","P","S","Cl",""],
@@ -154,12 +159,26 @@ const layout=[
 ["","","","","","","","","","","Au","","","","","","",""],
 ];
 
-let html='<div class="periodic">';
-layout.forEach(r=>{
-  r.forEach(el=>{
-    if(el) html+=createElement(el);
-    else html+='<div></div>';
+let html = `<h2>Periodic Table</h2>`;
+html += `<div class="periodic">`;
+
+layout.forEach(row => {
+  row.forEach(el => {
+    if(el){
+      html += createElement(el);
+    } else {
+      html += `<div></div>`;
+    }
   });
+});
+
+html += `</div>`;
+
+mainBox.innerHTML = html;
+}
+
+// FIX: ensure button works
+document.querySelectorAll('.control')[0].onclick = renderPeriodic;);
 });
 html+='</div>';
 
