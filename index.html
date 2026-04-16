@@ -8,40 +8,126 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:'Orbitron',sans-serif;background:#f4f8ff;overflow:hidden}
-.container{height:100vh;display:flex;flex-direction:column;padding:20px}
-.title{font-size:26px}
-.layout{flex:1;display:flex;gap:30px}
-.main-box{flex:1;background:white;border-radius:12px;padding:20px;overflow:auto}
+body{
+  margin:0;
+  font-family:'Orbitron',sans-serif;
+  background:#f4f8ff;
+  overflow:hidden;
+}
 
-.hex-ring{position:relative;width:280px;height:280px}
-.hex{position:absolute;width:70px;height:70px;background:white;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;cursor:pointer;transform:translate(-50%,-50%);transition:.2s}
+.container{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  padding:20px;
+}
+
+.title{font-size:26px}
+
+.layout{
+  flex:1;
+  display:flex;
+  gap:30px;
+  min-width:0;
+}
+
+.main-box{
+  flex:1;
+  background:white;
+  border-radius:12px;
+  padding:20px;
+  overflow:auto;
+  min-width:0;
+  z-index:2;
+  position:relative;
+}
+
+.hex-ring{
+  position:relative;
+  width:280px;
+  height:280px;
+  z-index:1;
+}
+
+.hex{
+  position:absolute;
+  width:70px;
+  height:70px;
+  background:white;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transform:translate(-50%,-50%);
+  transition:.2s;
+}
+
 .hex:hover{transform:translate(-50%,-50%) scale(1.1)}
-.hex img{width:60%}
+.hex img{width:60%; pointer-events:none;}
+
 .n1{top:0%;left:50%}
 .n2{top:25%;left:90%}
 .n3{top:75%;left:90%}
 .n4{top:100%;left:50%}
 .n5{top:75%;left:10%}
 .n6{top:25%;left:10%}
-.center-icon{position:absolute;top:50%;left:50%;width:70px;height:70px;transform:translate(-50%,-50%);cursor:pointer;display:flex;align-items:center;justify-content:center;background:white;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
 
-.footer{display:flex;justify-content:center;gap:20px;margin-top:10px}
+.center-icon{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:70px;
+  height:70px;
+  transform:translate(-50%,-50%);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:white;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+}
+
+.footer{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  margin-top:10px;
+}
+
 .control{cursor:pointer}
 
-.periodic{display:grid;grid-template-columns:repeat(18,1fr);gap:3px}
-.el{padding:6px;font-size:10px;text-align:center;border:1px solid #ddd;position:relative}
-.tooltip{display:none;position:absolute;background:black;color:white;padding:3px;font-size:9px}
+.periodic{
+  display:grid;
+  grid-template-columns:repeat(18,1fr);
+  gap:3px;
+}
+
+.el{
+  padding:6px;
+  font-size:10px;
+  text-align:center;
+  border:1px solid #ddd;
+  position:relative;
+}
+
+.tooltip{
+  display:none;
+  position:absolute;
+  background:black;
+  color:white;
+  padding:3px;
+  font-size:9px;
+}
+
 .el:hover .tooltip{display:block}
 
-/* technique colors */
 .maldi{background:#ffd6d6}
 .spec{background:#fff4b3}
 .lc{background:#d6f0ff}
 .gc{background:#e0d6ff}
 .icp{background:#d6ffd6}
 .aas{background:#ffe6cc}
-
 </style>
 </head>
 <body>
@@ -73,26 +159,20 @@ body{margin:0;font-family:'Orbitron',sans-serif;background:#f4f8ff;overflow:hidd
 <script>
 const mainBox=document.getElementById('mainBox');
 
-/* PAGES */
 const pages={
   home:`<h2>Welcome</h2><p>Select a technique.</p>`,
   gc:`<h2>Gas Chromatography (GC)</h2><p>Separation of volatile compounds.</p>`,
   lc:`<h2>Liquid Chromatography (LC/HPLC)</h2><p>Separation in liquid phase.</p>`,
   maldi:`<h2>MALDI</h2><p>Soft ionization mass spectrometry technique.</p>`,
-  uv:`<h2>Spectroscopy (UV-Vis)</h2><p>Measures absorbance vs wavelength.</p>`,
+  uv:`<h2>Spectroscopy (UV-Vis)</h2><p>Absorbance vs wavelength.</p>`,
   material:`<h2>Material Testing</h2><p>Mechanical properties analysis.</p>`,
-  aas:`<h2>Atomic Absorption Spectroscopy (AAS)</h2><p>Elemental analysis via absorption.</p>`
+  aas:`<h2>AAS</h2><p>Atomic absorption spectroscopy.</p>`
 };
 
 function loadPage(p){
-  if(!pages[p]){
-    mainBox.innerHTML = `<h3>Error</h3><p>Page "${p}" not found.</p>`;
-    return;
-  }
-  mainBox.innerHTML = pages[p];
+  mainBox.innerHTML = pages[p] || `<h3>Error</h3>`;
 }
 
-/* detection map updated */
 const detectionMap={
   H:["MALDI","SPECTROSCOPY"], He:["MALDI"],
   Li:["ICP","AAS"], Be:["ICP","AAS"],
@@ -106,7 +186,6 @@ const detectionMap={
 };
 
 function getClass(methods){
-  if(methods.length===0) return "";
   if(methods.length===1){
     const m=methods[0];
     if(m==="MALDI")return "maldi";
@@ -116,7 +195,7 @@ function getClass(methods){
     if(m==="ICP")return "icp";
     if(m==="AAS")return "aas";
   }
-  return ""; // multi handled via inline gradient
+  return "";
 }
 
 function getGradient(methods){
@@ -129,61 +208,56 @@ function getGradient(methods){
     ICP:"#d6ffd6",
     AAS:"#ffe6cc"
   };
-  const cols=methods.map(m=>colors[m]||"#fff");
-  return `background: linear-gradient(135deg, ${cols.join(',')});`;
+  return `background:linear-gradient(135deg,${methods.map(m=>colors[m]||"#fff").join(",")})`;
 }
 
 function createElement(el){
   const methods=detectionMap[el]||[];
-  const cls=getClass(methods);
-  const gradient=getGradient(methods);
-
-  return `<div class="el ${cls}" style="${gradient}">
-    ${el}
-    <div class="tooltip">${methods.join(',')||'No data'}</div>
-  </div>`;
-}">
+  return `<div class="el ${getClass(methods)}" style="${getGradient(methods)}">
     ${el}
     <div class="tooltip">${methods.join(',')||'No data'}</div>
   </div>`;
 }
 
 function renderPeriodic(){
+  const main=[
+    ["H","","","","","","","","","","","","","","","","","He"],
+    ["Li","Be","","","","","","","","","","","B","C","N","O","F","Ne"],
+    ["Na","Mg","","","","","","","","","","","Al","Si","P","S","Cl","Ar"],
+    ["K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr"],
+    ["Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe"],
+    ["Cs","Ba","La","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn"],
+    ["Fr","Ra","Ac","Rf","Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn","Nh","Fl","Mc","Lv","Ts","Og"]
+  ];
 
-const layout = [
-["H","","","","","","","","","","","","","","","","","He"],
-["Li","Be","","","","","","","","","","","B","C","N","O","",""],
-["Na","Mg","","","","","","","","","","","Al","Si","P","S","Cl",""],
-["K","Ca","","","","","","Fe","","","Cu","Zn","","","","","",""],
-["","","","","","","","","","","Ag","","","Pb","","","",""],
-["","","","","","","","","","","Au","","","","","","",""],
-];
+  const lan=["La","Ce","Pr","Nd","Pm","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu"];
+  const act=["Ac","Th","Pa","U","Np","Pu","Am","Cm","Bk","Cf","Es","Fm","Md","No","Lr"];
 
-let html = `<h2>Periodic Table</h2>`;
-html += `<div class="periodic">`;
+  let html=`<h2>Periodic Table</h2><div style='display:flex;flex-direction:column;gap:20px'>`;
 
-layout.forEach(row => {
-  row.forEach(el => {
-    if(el){
-      html += createElement(el);
-    } else {
-      html += `<div></div>`;
-    }
-  });
-});
+  html+=`<div class='periodic'>`;
+  main.forEach(r=>r.forEach(e=>html+=e?createElement(e):"<div></div>"));
+  html+=`</div>`;
 
-html += `</div>`;
+  html+=`<div><h3>Lanthanides</h3><div class='periodic'>`;
+  lan.forEach(e=>html+=createElement(e));
+  html+=`</div></div>`;
 
-mainBox.innerHTML = html;
+  html+=`<div><h3>Actinides</h3><div class='periodic'>`;
+  act.forEach(e=>html+=createElement(e));
+  html+=`</div></div>`;
+
+  html+=`</div>`;
+  mainBox.innerHTML=html;
 }
 
-// FIX: ensure button works
-document.querySelectorAll('.control')[0].onclick = renderPeriodic;);
+document.querySelectorAll('.hex').forEach(h=>{
+  h.addEventListener('click',()=>loadPage(h.dataset.page));
 });
-html+='</div>';
 
-mainBox.innerHTML=html;
-}
+document.getElementById('center').onclick=renderPeriodic;
+document.getElementById('home').onclick=()=>loadPage('home');
+document.getElementById('period').onclick=renderPeriodic;
 
 loadPage('home');
 </script>
