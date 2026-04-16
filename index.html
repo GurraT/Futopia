@@ -1,304 +1,172 @@
-upgrade <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Hex Ring Chemical UI</title>
-
+<title>Advanced Lab UI</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
+body{margin:0;font-family:'Orbitron',sans-serif;background:#f4f8ff;overflow:hidden}
+.container{height:100vh;display:flex;flex-direction:column;padding:20px}
+.title{font-size:26px}
+.layout{flex:1;display:flex;gap:30px}
+.main-box{flex:1;background:white;border-radius:12px;padding:20px;overflow:auto}
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Orbitron', sans-serif;
-  background: radial-gradient(circle at center, #eef5ff, #ffffff);
-  overflow: hidden;
-}
+.hex-ring{position:relative;width:280px;height:280px}
+.hex{position:absolute;width:70px;height:70px;background:white;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;cursor:pointer;transform:translate(-50%,-50%);transition:.2s}
+.hex:hover{transform:translate(-50%,-50%) scale(1.1)}
+.hex img{width:60%}
+.n1{top:0%;left:50%}
+.n2{top:25%;left:90%}
+.n3{top:75%;left:90%}
+.n4{top:100%;left:50%}
+.n5{top:75%;left:10%}
+.n6{top:25%;left:10%}
+.center-icon{position:absolute;top:50%;left:50%;width:70px;height:70px;transform:translate(-50%,-50%);cursor:pointer;display:flex;align-items:center;justify-content:center;background:white;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
 
-.container {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 15px 40px 0 40px;
-}
+.footer{display:flex;justify-content:center;gap:20px;margin-top:10px}
+.control{cursor:pointer}
 
-.title {
-  margin: 0;
-  font-size: 26px;
-  letter-spacing: 3px;
-}
+.periodic{display:grid;grid-template-columns:repeat(18,1fr);gap:3px}
+.el{padding:6px;font-size:10px;text-align:center;border:1px solid #ddd;position:relative}
+.tooltip{display:none;position:absolute;background:black;color:white;padding:3px;font-size:9px}
+.el:hover .tooltip{display:block}
 
-.divider {
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #9be7ff, transparent);
-  margin: 10px 0 20px;
-}
+/* technique colors */
+.maldi{background:#ffd6d6}
+.spec{background:#fff4b3}
+.lc{background:#d6f0ff}
+.gc{background:#e0d6ff}
+.icp{background:#d6ffd6}
+.aas{background:#ffe6cc}
 
-.layout {
-  flex: 1;
-  display: flex;
-  gap: 30px;
-}
-
-.main-box {
-  height: 70vh;
-  flex: 1;
-  padding: 20px;
-  overflow: auto;
-}
-
-/* HEX */
-.hex-ring {
-  position: relative;
-  width: 280px;
-  height: 280px;
-}
-
-.hex {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  background: white;
-  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transform: translate(-50%, -50%);
-}
-
-.hex img { width: 60%; }
-
-.n1 { top: 0%; left: 50%; }
-.n2 { top: 25%; left: 90%; }
-.n3 { top: 75%; left: 90%; }
-.n4 { top: 100%; left: 50%; }
-.n5 { top: 75%; left: 10%; }
-.n6 { top: 25%; left: 10%; }
-
-.center-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 75px;
-  height: 75px;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  cursor: pointer;
-}
-
-/* FOOTER */
-.footer {
-  height: 110px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 25px;
-}
-
-.control {
-  font-size: 18px;
-  cursor: pointer;
-}
-
-/* PERIODIC TABLE */
-.periodic {
-  display: grid;
-  grid-template-columns: repeat(18, 1fr);
-  gap: 3px;
-}
-
-.el {
-  background: white;
-  border: 1px solid #ddd;
-  padding: 6px;
-  font-size: 10px;
-  text-align: center;
-  position: relative;
-  cursor: pointer;
-}
-
-/* COLORS */
-.icp { background: #d0f0ff; }
-.aas { background: #d8ffd8; }
-.xrf { background: #f3d8ff; }
-.ms  { background: #ffe4cc; }
-.ir  { background: #fff4b3; }
-
-.multi {
-  box-shadow: 0 0 10px #9be7ff;
-}
-
-/* TOOLTIP */
-.tooltip {
-  position: absolute;
-  bottom: 110%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #222;
-  color: white;
-  padding: 4px 6px;
-  font-size: 10px;
-  border-radius: 4px;
-  display: none;
-  white-space: nowrap;
-}
-
-.el:hover .tooltip {
-  display: block;
-}
-
-/* TABLE */
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-  background: white;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 8px;
-  border: 1px solid #ddd;
-}
-
-.styled-table th {
-  background: #eef5ff;
-  position: sticky;
-  top: 0;
-}
 </style>
 </head>
-
 <body>
-
 <div class="container">
-
-<h1 class="title">Laboratorial guidance</h1>
-<div class="divider"></div>
-
+<h1 class="title">Laboratory Interface</h1>
 <div class="layout">
 
-  <div style="flex:1;">
-    <div class="main-box" id="mainBox"></div>
-  </div>
+<div class="main-box" id="mainBox"></div>
 
-  <div class="hex-ring">
-    <div class="center-icon" id="center"><img src="pic/pt.jpg"></div>
+<div class="hex-ring">
+<div class="center-icon" onclick="loadPage('home')">⚛</div>
 
-    <div class="hex n1" data-page="gc"><img src="pic/gc.jpg"></div>
-    <div class="hex n2" data-page="hplc"><img src="pic/hplc.jpg"></div>
-    <div class="hex n3" data-page="ms"><img src="pic/scale.jpg"></div>
-    <div class="hex n4" data-page="uv"><img src="pic/uv.jpg"></div>
-    <div class="hex n5" data-page="ms"><img src="pic/material testing.png"></div>
-    <div class="hex n6" data-page="hplc"><img src="pic/hplc.jpg"></div>
-  </div>
+<div class="hex n1" onclick="loadPage('gc')"><img src="pic/gc.jpg"></div>
+<div class="hex n2" onclick="loadPage('lc')"><img src="pic/hplc.jpg"></div>
+<div class="hex n3" onclick="loadPage('maldi')"><img src="pic/scale.jpg"></div>
+<div class="hex n4" onclick="loadPage('uv')"><img src="pic/uv.jpg"></div>
+<div class="hex n5" onclick="loadPage('material')"><img src="pic/material testing.png"></div>
+<div class="hex n6" onclick="loadPage('aas')"><img src="pic/hplc.jpg"></div>
+</div>
 
 </div>
 
 <div class="footer">
-  <div class="control" id="period">Periodic Table</div>
-  <div class="control" id="home">⌂</div>
-  <div class="control" id="analytics">Analytics</div>
+<div class="control" onclick="renderPeriodic()">Periodic Table</div>
+<div class="control" onclick="loadPage('home')">Home</div>
 </div>
-
 </div>
 
 <script>
+const mainBox=document.getElementById('mainBox');
 
-const mainBox = document.getElementById("mainBox");
-
-/* DETECTION MAP (sample, extend anytime) */
-const detectionMap = {
-  H:["MS"], He:["MS"],
-  Li:["ICP-MS","AAS"], Be:["ICP-MS","AAS"],
-  B:["ICP-MS"], C:["MS","IR"], N:["MS","IR"], O:["MS","IR"],
-  Na:["ICP-MS","AAS"], Mg:["ICP-MS","AAS"],
-  Al:["ICP-MS","AAS","XRF"], Si:["ICP-MS","XRF"],
-  P:["ICP-MS"], S:["ICP-MS","IR"], Cl:["ICP-MS"],
-  K:["ICP-MS","AAS"], Ca:["ICP-MS","AAS"],
-  Fe:["ICP-MS","AAS","XRF"], Cu:["ICP-MS","AAS","XRF"],
-  Zn:["ICP-MS","AAS"], Ag:["ICP-MS","AAS","XRF"],
-  Au:["ICP-MS","XRF"], Pb:["ICP-MS","AAS","XRF"]
+/* PAGES */
+const pages={
+  home:`<h2>Welcome</h2>` ,
+  gc:`<h2>Gas Chromatography</h2>` ,
+  lc:`<h2>Liquid Chromatography</h2>` ,
+  maldi:`<h2>MALDI</h2>` ,
+  uv:`<h2>Spectroscopy</h2>` ,
+  material:`<h2>Material Testing</h2>` ,
+  aas:`<h2>Atomic Absorption</h2>`
 };
 
-/* ELEMENT CELL */
-function createElementCell(el){
-  const methods = detectionMap[el] || [];
-
-  let color="";
-  if(methods.includes("ICP-MS")) color="icp";
-  else if(methods.includes("AAS")) color="aas";
-  else if(methods.includes("XRF")) color="xrf";
-  else if(methods.includes("MS")) color="ms";
-  else if(methods.includes("IR")) color="ir";
-
-  const multi = methods.length>1 ? "multi":"";
-
-  return `
-    <div class="el ${color} ${multi}">
-      ${el}
-      <div class="tooltip">${methods.join(", ") || "No data"}</div>
-    </div>
-  `;
+function loadPage(p){
+  mainBox.innerHTML=pages[p]||"Page not found";
 }
 
-/* FULL PERIODIC TABLE */
-function renderPeriodic(){
+/* detection map updated */
+const detectionMap={
+  H:["MALDI","SPECTROSCOPY"], He:["MALDI"],
+  Li:["ICP","AAS"], Be:["ICP","AAS"],
+  B:["ICP"], C:["MALDI","GC","LC"], N:["SPECTROSCOPY"], O:["SPECTROSCOPY"],
+  Na:["ICP","AAS"], Mg:["ICP","AAS"],
+  Al:["ICP","AAS"], Si:["ICP"],
+  P:["SPECTROSCOPY"], S:["SPECTROSCOPY"], Cl:["ICP"],
+  K:["ICP","AAS"], Ca:["ICP","AAS"],
+  Fe:["ICP","AAS"], Cu:["ICP","AAS"], Zn:["ICP","AAS"],
+  Ag:["ICP","AAS"], Au:["ICP"], Pb:["ICP","AAS"]
+};
 
-const layout = [
+function getClass(methods){
+  if(methods.length===0) return "";
+  if(methods.length===1){
+    const m=methods[0];
+    if(m==="MALDI")return "maldi";
+    if(m==="SPECTROSCOPY")return "spec";
+    if(m==="LC")return "lc";
+    if(m==="GC")return "gc";
+    if(m==="ICP")return "icp";
+    if(m==="AAS")return "aas";
+  }
+  return ""; // multi handled via inline gradient
+}
+
+function getGradient(methods){
+  if(methods.length<=1) return "";
+  const colors={
+    MALDI:"#ffd6d6",
+    SPECTROSCOPY:"#fff4b3",
+    LC:"#d6f0ff",
+    GC:"#e0d6ff",
+    ICP:"#d6ffd6",
+    AAS:"#ffe6cc"
+  };
+  const cols=methods.map(m=>colors[m]||"#fff");
+  return `background: linear-gradient(135deg, ${cols.join(',')});`;
+}
+
+function createElement(el){
+  const methods=detectionMap[el]||[];
+  const cls=getClass(methods);
+  const gradient=getGradient(methods);
+
+  return `<div class="el ${cls}" style="${gradient}">
+    ${el}
+    <div class="tooltip">${methods.join(',')||'No data'}</div>
+  </div>`;
+}">
+    ${el}
+    <div class="tooltip">${methods.join(',')||'No data'}</div>
+  </div>`;
+}
+
+function renderPeriodic(){
+const layout=[
 ["H","","","","","","","","","","","","","","","","","He"],
-["Li","Be","","","","","","","","","","","B","C","N","O","F","Ne"],
-["Na","Mg","","","","","","","","","","","Al","Si","P","S","Cl","Ar"],
-["K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr"],
-["Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe"],
-["Cs","Ba","La*","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn"],
-["Fr","Ra","Ac*","Rf","Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn","Nh","Fl","Mc","Lv","Ts","Og"]
+["Li","Be","","","","","","","","","","","B","C","N","O","",""],
+["Na","Mg","","","","","","","","","","","Al","Si","P","S","Cl",""],
+["K","Ca","","","","","","Fe","","","Cu","Zn","","","","","",""],
+["","","","","","","","","","","Ag","","","Pb","","","",""],
+["","","","","","","","","","","Au","","","","","","",""],
 ];
 
-const lan = ["La","Ce","Pr","Nd","Pm","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu"];
-const act = ["Ac","Th","Pa","U","Np","Pu","Am","Cm","Bk","Cf","Es","Fm","Md","No","Lr"];
+let html='<div class="periodic">';
+layout.forEach(r=>{
+  r.forEach(el=>{
+    if(el) html+=createElement(el);
+    else html+='<div></div>';
+  });
+});
+html+='</div>';
 
-let html = `<div style="display:flex; flex-direction:column; gap:15px;">`;
-
-html += `<div class="periodic">`;
-layout.forEach(r=>r.forEach(el=>{
-  html += el ? createElementCell(el.replace("*","")) : `<div></div>`;
-}));
-html += `</div>`;
-
-html += `<div><b>Lanthanides</b><div class="periodic">`;
-lan.forEach(el=>html+=createElementCell(el));
-html += `</div></div>`;
-
-html += `<div><b>Actinides</b><div class="periodic">`;
-act.forEach(el=>html+=createElementCell(el));
-html += `</div></div>`;
-
-html += `</div>`;
-
-mainBox.innerHTML = html;
+mainBox.innerHTML=html;
 }
 
-/* HOME */
-document.getElementById("home").onclick = () => {
-  mainBox.innerHTML = "<h3>Welcome</h3><p>Select a tool or open the periodic table.</p>";
-};
-
-document.getElementById("period").onclick = renderPeriodic;
-document.getElementById("center").onclick = renderPeriodic;
-
-/* LOAD HOME */
-document.getElementById("home").click();
-
+loadPage('home');
 </script>
-
 </body>
-</html>  so that all icons have a link to a new page opeining in main div + same size + periodic table updated with following technique MALDI, SPECTROSCOPY, LC, GC, SPECTROSCOPY,ICP, AAS
+</html>
